@@ -1,0 +1,7 @@
+{
+  "name": "ac-config-ng",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
