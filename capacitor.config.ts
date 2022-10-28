@@ -5,6 +5,11 @@ const config: CapacitorConfig = {
   appName: 'AC Config Tool',
   webDir: 'www',
   bundledWebRuntime: false,
+  plugins: {
+    SplashScreen: {
+      launchAutoHide: false,
+    },
+  },
 };
 
 export default config;

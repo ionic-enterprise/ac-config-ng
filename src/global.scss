@@ -24,3 +24,64 @@
 @import "~@ionic/angular/css/text-alignment.css";
 @import "~@ionic/angular/css/text-transformation.css";
 @import "~@ionic/angular/css/flex-utils.css";
+
+.error-message {
+  padding: 2em;
+  color: var(--ion-color-danger, #ff0000);
+}
+
+.main-content {
+  --background: linear-gradient(
+    var(--ion-color-light),
+    var(--ion-color-medium)
+  );
+}
+
+@media (prefers-color-scheme: dark) {
+  .main-content {
+    --background: linear-gradient(
+      var(--ion-color-light),
+      var(--ion-color-medium)
+    );
+  }
+}
+
+.list-ios {
+  background: transparent;
+}
+
+.list-md {
+  background: transparent;
+}
+
+.item {
+  --background: transparent;
+}
+
+ion-list-header {
+  --background: transparent;
+}
+
+ion-card {
+  border-radius: 20px;
+}
+
+ion-select::part(icon) {
+  width: 20px;
+  border: 1px solid;
+  border-radius: 4px;
+}
+
+ion-select::part(text) {
+  margin-right: 1em;
+}
+
+dd {
+  margin-top: 1em;
+  margin-bottom: 1em;
+  margin-left: 2em;
+}
+
+dt {
+  font-weight: bold;
+}
