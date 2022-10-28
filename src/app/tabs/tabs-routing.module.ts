@@ -8,9 +8,11 @@ const routes: Routes = [
     component: TabsPage,
     children: [
       {
-        path: 'login',
+        path: 'test-connection',
         loadChildren: () =>
-          import('../login/login.module').then((m) => m.LoginPageModule),
+          import('../test-connection/test-connection.module').then(
+            (m) => m.TestConnectionPageModule
+          ),
       },
       {
         path: 'settings',
@@ -26,14 +28,14 @@ const routes: Routes = [
       },
       {
         path: '',
-        redirectTo: '/tabs/login',
+        redirectTo: '/tabs/test-connection',
         pathMatch: 'full',
       },
     ],
   },
   {
     path: '',
-    redirectTo: '/tabs/login',
+    redirectTo: '/tabs/test-connection',
     pathMatch: 'full',
   },
 ];

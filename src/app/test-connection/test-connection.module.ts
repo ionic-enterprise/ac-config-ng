@@ -2,9 +2,9 @@ import { IonicModule } from '@ionic/angular';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { LoginPage } from './login.page';
+import { TestConnectionPage } from './test-connection.page';
 import { ExploreContainerComponentModule } from '../explore-container/explore-container.module';
-import { LoginPageRoutingModule } from './login-routing.module';
+import { TestConnectionPageRoutingModule } from './test-connection-routing.module';
 
 @NgModule({
   imports: [
@@ -12,8 +12,8 @@ import { LoginPageRoutingModule } from './login-routing.module';
     CommonModule,
     FormsModule,
     ExploreContainerComponentModule,
-    LoginPageRoutingModule,
+    TestConnectionPageRoutingModule,
   ],
-  declarations: [LoginPage],
+  declarations: [TestConnectionPage],
 })
-export class LoginPageModule {}
+export class TestConnectionPageModule {}
