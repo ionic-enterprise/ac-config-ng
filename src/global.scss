@@ -30,38 +30,6 @@
   color: var(--ion-color-danger, #ff0000);
 }
 
-.main-content {
-  --background: linear-gradient(
-    var(--ion-color-light),
-    var(--ion-color-medium)
-  );
-}
-
-@media (prefers-color-scheme: dark) {
-  .main-content {
-    --background: linear-gradient(
-      var(--ion-color-light),
-      var(--ion-color-medium)
-    );
-  }
-}
-
-.list-ios {
-  background: transparent;
-}
-
-.list-md {
-  background: transparent;
-}
-
-.item {
-  --background: transparent;
-}
-
-ion-list-header {
-  --background: transparent;
-}
-
 ion-card {
   border-radius: 20px;
 }
