@@ -7,6 +7,11 @@ const routes: Routes = [
     loadChildren: () =>
       import('./tabs/tabs.module').then((m) => m.TabsPageModule),
   },
+  {
+    path: 'login',
+    redirectTo: '/tabs/test-connection',
+    pathMatch: 'full',
+  },
 ];
 @NgModule({
   imports: [

@@ -15,11 +15,25 @@
     <ion-card-content>
       <ion-label>
         Status:
-        <span class="status"> Logged Out </span>
+        <span class="status" data-testid="auth-status-label">
+          {{loggedIn ? "Logged In" : "Logged Out"}}
+        </span>
       </ion-label>
+      <div class="error-message">{{ errorMessage }}</div>
       <div class="actions">
-        <ion-button fill="outline"> Log In </ion-button>
-        <ion-button>Refresh</ion-button>
+        <ion-button
+          fill="outline"
+          data-testid="auth-button"
+          (click)="handleAuth()"
+        >
+          {{loggedIn ? "Log Out" : "Log In"}}
+        </ion-button>
+        <ion-button
+          [disabled]="!loggedIn"
+          data-testid="refresh-button"
+          (click)="refresh()"
+          >Refresh</ion-button
+        >
       </div>
     </ion-card-content>
   </ion-card>

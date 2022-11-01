@@ -3,7 +3,8 @@
   xmlns:android="http://schemas.android.com/apk/res/android"
   package="io.ionic.acconfigng"
 >
-    <application
+
+  <application
     android:allowBackup="true"
     android:icon="@mipmap/ic_launcher"
     android:label="@string/app_name"
@@ -11,34 +12,47 @@
     android:supportsRtl="true"
     android:theme="@style/AppTheme"
   >
-        <activity
-      android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|smallestScreenSize|screenLayout|uiMode"
+    <activity
       android:name="io.ionic.acconfigng.MainActivity"
-      android:label="@string/title_activity_main"
-      android:theme="@style/AppTheme.NoActionBarLaunch"
-      android:launchMode="singleTask"
+      android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|smallestScreenSize|screenLayout|uiMode"
       android:exported="true"
+      android:label="@string/title_activity_main"
+      android:launchMode="singleTask"
+      android:theme="@style/AppTheme.NoActionBarLaunch"
     >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+      <intent-filter>
+        <action android:name="android.intent.action.MAIN" />
+        <category android:name="android.intent.category.LAUNCHER" />
+      </intent-filter>
 
-        <provider
+      <intent-filter>
+        <data android:scheme="msauth" />
+        <action android:name="android.intent.action.VIEW" />
+        <category android:name="android.intent.category.DEFAULT" />
+        <category android:name="android.intent.category.BROWSABLE" />
+      </intent-filter>
+
+      <intent-filter>
+        <action android:name="android.intent.action.SEND" />
+        <category android:name="android.intent.category.DEFAULT" />
+        <data android:mimeType="text/*" />
+      </intent-filter>
+    </activity>
+
+    <provider
       android:name="androidx.core.content.FileProvider"
       android:authorities="${applicationId}.fileprovider"
       android:exported="false"
       android:grantUriPermissions="true"
     >
-            <meta-data
+      <meta-data
         android:name="android.support.FILE_PROVIDER_PATHS"
         android:resource="@xml/file_paths"
       />
-        </provider>
-    </application>
+    </provider>
+  </application>
 
-    <!-- Permissions -->
+  <!-- Permissions -->
 
-    <uses-permission android:name="android.permission.INTERNET" />
+  <uses-permission android:name="android.permission.INTERNET" />
 </manifest>
