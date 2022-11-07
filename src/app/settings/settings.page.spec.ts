@@ -10,7 +10,6 @@ import {
 } from '@env/environment';
 import { IonicModule } from '@ionic/angular';
 import { click } from '@test/util';
-import { ExploreContainerComponentModule } from '../explore-container/explore-container.module';
 import { SettingsPage } from './settings.page';
 
 describe('SettingsPage', () => {
@@ -20,7 +19,7 @@ describe('SettingsPage', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [SettingsPage],
-      imports: [IonicModule.forRoot(), ExploreContainerComponentModule],
+      imports: [IonicModule],
       providers: [
         {
           provide: AuthenticationService,

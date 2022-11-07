@@ -9,8 +9,8 @@ const routes: Routes = [
   },
   {
     path: 'login',
-    redirectTo: '/tabs/test-connection',
-    pathMatch: 'full',
+    loadChildren: () =>
+      import('./login/login.module').then((m) => m.LoginPageModule),
   },
 ];
 @NgModule({

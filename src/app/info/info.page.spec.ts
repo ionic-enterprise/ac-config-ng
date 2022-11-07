@@ -11,7 +11,7 @@ describe('InfoPage', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [InfoPage],
-      imports: [IonicModule.forRoot(), ExploreContainerComponentModule],
+      imports: [IonicModule, ExploreContainerComponentModule],
     }).compileComponents();
 
     fixture = TestBed.createComponent(InfoPage);
