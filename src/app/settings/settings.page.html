@@ -5,5 +5,54 @@
 </ion-header>
 
 <ion-content>
-  <app-explore-container name="Settings page"></app-explore-container>
+  <div *ngIf="disableEdits" class="error-message" data-testid="logout-message">
+    Please log out first
+  </div>
+
+  <ion-list>
+    <ion-item>
+      <ion-label>
+        <ion-button
+          expand="full"
+          data-testid="use-azure"
+          [disabled]="disableEdits"
+          (click)="useAzure()"
+          >Use Azure</ion-button
+        >
+      </ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-label>
+        <ion-button
+          expand="full"
+          data-testid="use-aws"
+          [disabled]="disableEdits"
+          (click)="useAWS()"
+          >Use Cognito</ion-button
+        >
+      </ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-label>
+        <ion-button
+          expand="full"
+          data-testid="use-auth0"
+          [disabled]="disableEdits"
+          (click)="useAuth0()"
+          >Use Auth0</ion-button
+        >
+      </ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-label>
+        <ion-button
+          expand="full"
+          data-testid="use-okta"
+          [disabled]="disableEdits"
+          (click)="useOkta()"
+          >Use Okta</ion-button
+        >
+      </ion-label>
+    </ion-item>
+  </ion-list>
 </ion-content>

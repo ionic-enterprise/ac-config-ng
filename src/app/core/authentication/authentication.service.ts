@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
+import { Preferences } from '@capacitor/preferences';
 import {
   awsConfig,
+  azureConfig,
   mobileConfigExtras,
   webConfigExtras,
 } from '@env/environment';
@@ -19,11 +21,36 @@ export class AuthenticationService {
     private platform: Platform
   ) {}
 
+  async getBaseConfig(): Promise<any> {
+    const { value } = await Preferences.get({ key: 'base-config' });
+    return value ? JSON.parse(value) : awsConfig;
+  }
+
+  async setBaseConfig(config: any): Promise<void> {
+    this.authenticator = null;
+    return Preferences.set({
+      key: 'base-config',
+      value: JSON.stringify(config),
+    });
+  }
+
   async getConfig(platform: 'mobile' | 'web'): Promise<IonicAuthOptions> {
+    const config = await this.getBaseConfig();
+    const extras =
+      platform === 'web' ? { ...webConfigExtras } : { ...mobileConfigExtras };
+    if (
+      platform === 'mobile' &&
+      config.discoveryUrl === azureConfig.discoveryUrl
+    ) {
+      extras.redirectUri =
+        'msauth://com.ionic.acprovider/O5m5Gtd2Xt8UNkW3wk7DWyKGfv8%3D';
+      extras.logoutUrl =
+        'msauth://com.ionic.acprovider/O5m5Gtd2Xt8UNkW3wk7DWyKGfv8%3D';
+    }
     return {
       logLevel: 'DEBUG',
-      ...awsConfig,
-      ...(platform === 'web' ? webConfigExtras : mobileConfigExtras),
+      ...config,
+      ...extras,
     };
   }
 

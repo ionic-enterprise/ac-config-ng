@@ -6,4 +6,7 @@ export const createAuthenticationServiceMock = () =>
     login: Promise.resolve(undefined),
     logout: Promise.resolve(undefined),
     refresh: Promise.resolve(undefined),
+    getBaseConfig: Promise.resolve(null),
+    setBaseConfig: Promise.resolve(undefined),
+    getConfig: Promise.resolve(null),
   });

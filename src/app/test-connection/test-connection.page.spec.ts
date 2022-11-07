@@ -1,6 +1,5 @@
 import {
   ComponentFixture,
-  ComponentFixtureNoNgZone,
   fakeAsync,
   TestBed,
   tick,
@@ -32,38 +31,36 @@ describe('TestConnectionPage', () => {
 
     fixture = TestBed.createComponent(TestConnectionPage);
     component = fixture.componentInstance;
+    fixture.detectChanges();
   }));
 
   it('is created', () => {
-    fixture.detectChanges();
     expect(component).toBeTruthy();
   });
 
   describe('when logged in', () => {
-    beforeEach(waitForAsync(() => {
+    beforeEach(async () => {
       const auth = TestBed.inject(AuthenticationService);
       (auth.isAuthenticated as jasmine.Spy).and.resolveTo(true);
+      await component.ionViewDidEnter();
       fixture.detectChanges();
-    }));
+    });
 
-    it('shows a status of logged in', () => {
-      fixture.detectChanges();
+    it('shows a status of logged in', async () => {
       const label = fixture.debugElement.query(
         By.css('[data-testid="auth-status-label"]')
       );
       expect(label.nativeElement.textContent.trim()).toEqual('Logged In');
     });
 
-    it('shows a auth button of Log Out', () => {
-      fixture.detectChanges();
+    it('shows a auth button of Log Out', async () => {
       const button = fixture.debugElement.query(
         By.css('[data-testid="auth-button"]')
       );
       expect(button.nativeElement.textContent.trim()).toEqual('Log Out');
     });
 
-    it('enables the refresh', () => {
-      fixture.detectChanges();
+    it('enables the refresh', async () => {
       const button = fixture.debugElement.query(
         By.css('[data-testid="refresh-button"]')
       );
@@ -72,7 +69,6 @@ describe('TestConnectionPage', () => {
 
     it('calls refresh when refresh clicked', () => {
       const auth = TestBed.inject(AuthenticationService);
-      fixture.detectChanges();
       const button = fixture.debugElement.query(
         By.css('[data-testid="refresh-button"]')
       );
@@ -83,7 +79,6 @@ describe('TestConnectionPage', () => {
     describe('auth button clicked', () => {
       it('performs a logout', () => {
         const auth = TestBed.inject(AuthenticationService);
-        fixture.detectChanges();
         const button = fixture.debugElement.query(
           By.css('[data-testid="auth-button"]')
         );
@@ -93,7 +88,6 @@ describe('TestConnectionPage', () => {
 
       it('requeries is authenticated', fakeAsync(() => {
         const auth = TestBed.inject(AuthenticationService);
-        fixture.detectChanges();
         const button = fixture.debugElement.query(
           By.css('[data-testid="auth-button"]')
         );
@@ -105,14 +99,14 @@ describe('TestConnectionPage', () => {
   });
 
   describe('when not logged in', () => {
-    beforeEach(waitForAsync(() => {
+    beforeEach(async () => {
       const auth = TestBed.inject(AuthenticationService);
       (auth.isAuthenticated as jasmine.Spy).and.resolveTo(false);
+      await component.ionViewDidEnter();
       fixture.detectChanges();
-    }));
+    });
 
     it('shows a status of logged out', () => {
-      fixture.detectChanges();
       const label = fixture.debugElement.query(
         By.css('[data-testid="auth-status-label"]')
       );
@@ -120,7 +114,6 @@ describe('TestConnectionPage', () => {
     });
 
     it('shows a auth button of Log In', () => {
-      fixture.detectChanges();
       const button = fixture.debugElement.query(
         By.css('[data-testid="auth-button"]')
       );
@@ -128,7 +121,6 @@ describe('TestConnectionPage', () => {
     });
 
     it('disables the refresh', () => {
-      fixture.detectChanges();
       const button = fixture.debugElement.query(
         By.css('[data-testid="refresh-button"]')
       );
@@ -138,7 +130,6 @@ describe('TestConnectionPage', () => {
     describe('auth button clicked', () => {
       it('performs a login', () => {
         const auth = TestBed.inject(AuthenticationService);
-        fixture.detectChanges();
         const button = fixture.debugElement.query(
           By.css('[data-testid="auth-button"]')
         );
@@ -148,7 +139,6 @@ describe('TestConnectionPage', () => {
 
       it('requeries is authenticated', fakeAsync(() => {
         const auth = TestBed.inject(AuthenticationService);
-        fixture.detectChanges();
         const button = fixture.debugElement.query(
           By.css('[data-testid="auth-button"]')
         );

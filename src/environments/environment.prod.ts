@@ -4,11 +4,11 @@ export const auth0Config: IonicAuthOptions = {
   // audience value is required for auth0's config. If it doesn't exist, the jwt payload will be empty
   audience: 'https://io.ionic.demo.ac',
   authConfig: 'auth0' as 'auth0',
-  clientID: '1XaS52xS0XDdE0NUYKEEnF047AC53USl',
+  clientID: 'yLasZNUGkZ19DGEjTmAITBfGXzqbvd00',
   discoveryUrl:
-    'https://dev-j3wl8n0b.auth0.com/.well-known/openid-configuration',
+    'https://dev-2uspt-sz.us.auth0.com/.well-known/openid-configuration',
   logoutUrl: '',
-  scope: 'openid offline_access email picture profile',
+  scope: 'openid email picture profile',
 };
 
 export const awsConfig = {

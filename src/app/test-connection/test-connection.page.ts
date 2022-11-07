@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { AuthenticationService } from '@app/core';
 
 @Component({
@@ -6,13 +6,13 @@ import { AuthenticationService } from '@app/core';
   templateUrl: 'test-connection.page.html',
   styleUrls: ['test-connection.page.scss'],
 })
-export class TestConnectionPage implements OnInit {
+export class TestConnectionPage {
   loggedIn: boolean;
   errorMessage: string;
 
   constructor(private authentication: AuthenticationService) {}
 
-  async ngOnInit(): Promise<void> {
+  async ionViewDidEnter(): Promise<void> {
     this.loggedIn = await this.authentication.isAuthenticated();
   }
 

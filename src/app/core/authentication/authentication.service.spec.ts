@@ -2,6 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { AuthenticationService } from './authentication.service';
 import {
   awsConfig,
+  azureConfig,
   mobileConfigExtras,
   webConfigExtras,
 } from '@env/environment';
@@ -10,6 +11,7 @@ import { createIonicAuthFactoryServiceMock } from '../testing';
 import { Platform } from '@ionic/angular';
 import { createPlatformMock } from '@test/mocks';
 import { IonicAuth } from '@ionic-enterprise/auth';
+import { Preferences } from '@capacitor/preferences';
 
 describe('AuthenticationService', () => {
   let service: AuthenticationService;
@@ -44,6 +46,51 @@ describe('AuthenticationService', () => {
     expect(service).toBeTruthy();
   });
 
+  describe('set base config', () => {
+    it('saves the config', async () => {
+      spyOn(Preferences, 'set');
+      await service.setBaseConfig({
+        authConfig: 'azure' as 'azure',
+        clientID: '4273afw',
+        discoveryUrl:
+          'https://some.azure.server/.well-known/openid-configuration',
+        scope: 'openid email profile',
+        audience: 'all-the-users',
+        webAuthFlow: 'PKCE' as 'PKCE',
+      });
+      expect(Preferences.set).toHaveBeenCalledTimes(1);
+      expect(Preferences.set).toHaveBeenCalledWith({
+        key: 'base-config',
+        value: JSON.stringify({
+          authConfig: 'azure' as 'azure',
+          clientID: '4273afw',
+          discoveryUrl:
+            'https://some.azure.server/.well-known/openid-configuration',
+          scope: 'openid email profile',
+          audience: 'all-the-users',
+          webAuthFlow: 'PKCE' as 'PKCE',
+        }),
+      });
+    });
+
+    it('invalidates the current authenticator', async () => {
+      const factory = TestBed.inject(IonicAuthFactoryService);
+      await service.logout();
+      expect(factory.create).toHaveBeenCalledTimes(1);
+      await service.setBaseConfig({
+        authConfig: 'azure' as 'azure',
+        clientID: '4273afw',
+        discoveryUrl:
+          'https://some.azure.server/.well-known/openid-configuration',
+        scope: 'openid email profile',
+        audience: 'all-the-users',
+        webAuthFlow: 'PKCE' as 'PKCE',
+      });
+      await service.login();
+      expect(factory.create).toHaveBeenCalledTimes(2);
+    });
+  });
+
   describe('get config', () => {
     describe('for web', () => {
       it('resolves the AWS config by default', async () => {
@@ -55,6 +102,46 @@ describe('AuthenticationService', () => {
           scope: 'openid email profile',
           audience: '',
           webAuthFlow: 'PKCE' as 'PKCE',
+          logLevel: 'DEBUG' as 'DEBUG',
+          redirectUri: 'http://localhost:8100/login',
+          logoutUrl: 'http://localhost:8100/login',
+          platform: 'web' as 'web',
+        });
+      });
+
+      it('resolves the modified config if it exists', async () => {
+        spyOn(Preferences, 'get').and.resolveTo({
+          value: JSON.stringify({
+            authConfig: 'azure' as 'azure',
+            clientID: '4273afw',
+            discoveryUrl:
+              'https://some.azure.server/.well-known/openid-configuration',
+            scope: 'openid email profile',
+            audience: 'all-the-users',
+            webAuthFlow: 'PKCE' as 'PKCE',
+          }),
+        });
+        expect(await service.getConfig('web')).toEqual({
+          authConfig: 'azure' as 'azure',
+          clientID: '4273afw',
+          discoveryUrl:
+            'https://some.azure.server/.well-known/openid-configuration',
+          scope: 'openid email profile',
+          audience: 'all-the-users',
+          webAuthFlow: 'PKCE' as 'PKCE',
+          logLevel: 'DEBUG' as 'DEBUG',
+          redirectUri: 'http://localhost:8100/login',
+          logoutUrl: 'http://localhost:8100/login',
+          platform: 'web' as 'web',
+        });
+      });
+
+      it('does not use an alternate redirect and logout URL for our Azure instance', async () => {
+        spyOn(Preferences, 'get').and.resolveTo({
+          value: JSON.stringify(azureConfig),
+        });
+        expect(await service.getConfig('web')).toEqual({
+          ...azureConfig,
           logLevel: 'DEBUG' as 'DEBUG',
           redirectUri: 'http://localhost:8100/login',
           logoutUrl: 'http://localhost:8100/login',
@@ -76,6 +163,50 @@ describe('AuthenticationService', () => {
           logLevel: 'DEBUG' as 'DEBUG',
           redirectUri: 'msauth://login',
           logoutUrl: 'msauth://login',
+          platform: 'capacitor' as 'capacitor',
+          iosWebView: 'private' as 'private',
+        });
+      });
+
+      it('resolves the modified config if it exists', async () => {
+        spyOn(Preferences, 'get').and.resolveTo({
+          value: JSON.stringify({
+            authConfig: 'azure' as 'azure',
+            clientID: '4273afw',
+            discoveryUrl:
+              'https://some.azure.server/.well-known/openid-configuration',
+            scope: 'openid email profile',
+            audience: 'all-the-users',
+            webAuthFlow: 'PKCE' as 'PKCE',
+          }),
+        });
+        expect(await service.getConfig('mobile')).toEqual({
+          authConfig: 'azure' as 'azure',
+          clientID: '4273afw',
+          discoveryUrl:
+            'https://some.azure.server/.well-known/openid-configuration',
+          scope: 'openid email profile',
+          audience: 'all-the-users',
+          webAuthFlow: 'PKCE' as 'PKCE',
+          logLevel: 'DEBUG' as 'DEBUG',
+          redirectUri: 'msauth://login',
+          logoutUrl: 'msauth://login',
+          platform: 'capacitor' as 'capacitor',
+          iosWebView: 'private' as 'private',
+        });
+      });
+
+      it('uses an alternate redirect and logout URL for our Azure instance', async () => {
+        spyOn(Preferences, 'get').and.resolveTo({
+          value: JSON.stringify(azureConfig),
+        });
+        expect(await service.getConfig('mobile')).toEqual({
+          ...azureConfig,
+          logLevel: 'DEBUG' as 'DEBUG',
+          redirectUri:
+            'msauth://com.ionic.acprovider/O5m5Gtd2Xt8UNkW3wk7DWyKGfv8%3D',
+          logoutUrl:
+            'msauth://com.ionic.acprovider/O5m5Gtd2Xt8UNkW3wk7DWyKGfv8%3D',
           platform: 'capacitor' as 'capacitor',
           iosWebView: 'private' as 'private',
         });
