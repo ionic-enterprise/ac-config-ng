@@ -10,6 +10,7 @@
   </div>
 
   <ion-list>
+    <ion-list-header> Ionic's OIDC Server Options</ion-list-header>
     <ion-item>
       <ion-label>
         <ion-button
@@ -51,6 +52,67 @@
           [disabled]="disableEdits"
           (click)="useOkta()"
           >Use Okta</ion-button
+        >
+      </ion-label>
+    </ion-item>
+    <ion-list-header> Customize </ion-list-header>
+    <ion-item>
+      <ion-label> Auth Config </ion-label>
+      <ion-select [(ngModel)]="authConfig" [disabled]="disableEdits">
+        <ion-select-option *ngFor="let s of oidcServers" [value]="s.key"
+          >{{s.value}}</ion-select-option
+        >
+      </ion-select>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating"> Client ID</ion-label>
+      <ion-input
+        [(ngModel)]="clientID"
+        [disabled]="disableEdits"
+        data-testid="client-id-input"
+      ></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating"> Discovery URL </ion-label>
+      <ion-input
+        [(ngModel)]="discoveryURL"
+        [disabled]="disableEdits"
+        data-testid="discovery-url-input"
+      ></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating"> Scope </ion-label>
+      <ion-input
+        [(ngModel)]="scope"
+        [disabled]="disableEdits"
+        data-testid="scope-input"
+      ></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating"> Audience </ion-label>
+      <ion-input
+        [(ngModel)]="audience"
+        [disabled]="disableEdits"
+        data-testid="audience-input"
+      ></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label> Web Auth Flow </ion-label>
+      <ion-select [(ngModel)]="webAuthFlow" [disabled]="disableEdits">
+        <ion-select-option *ngFor="let s of authFlows" [value]="s.key"
+          >{{s.value}}</ion-select-option
+        >
+      </ion-select>
+    </ion-item>
+    <ion-item>
+      <ion-label>
+        <ion-button
+          expand="full"
+          data-testid="use-customization"
+          [disabled]="disableEdits"
+          (click)="useCustomization()"
+        >
+          Use Customization</ion-button
         >
       </ion-label>
     </ion-item>
