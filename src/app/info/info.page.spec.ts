@@ -1,7 +1,8 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { IonicModule } from '@ionic/angular';
-import { ExploreContainerComponentModule } from '../explore-container/explore-container.module';
-
+import { AuthenticationService } from '@app/core';
+import { createAuthenticationServiceMock } from '@app/core/testing';
+import { IonicModule, Platform } from '@ionic/angular';
+import { createPlatformMock } from '@test/mocks';
 import { InfoPage } from './info.page';
 
 describe('InfoPage', () => {
@@ -11,7 +12,17 @@ describe('InfoPage', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [InfoPage],
-      imports: [IonicModule, ExploreContainerComponentModule],
+      imports: [IonicModule],
+      providers: [
+        {
+          provide: AuthenticationService,
+          useFactory: createAuthenticationServiceMock,
+        },
+        {
+          provide: Platform,
+          useFactory: createPlatformMock,
+        },
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(InfoPage);
