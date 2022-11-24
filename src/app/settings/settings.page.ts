@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { AuthenticationService } from '@app/core';
+import { flows, providers } from '@app/data';
 import {
   auth0Config,
   awsConfig,
@@ -14,22 +15,8 @@ import {
 })
 export class SettingsPage {
   disableEdits: boolean;
-  oidcServers = [
-    { key: 'auth0', value: 'Auth0' },
-    { key: 'azure', value: 'Azure B2C' },
-    { key: 'cognito', value: 'Cognito (AWS)' },
-    { key: 'identity-server', value: 'Identity Server' },
-    { key: 'keycloak', value: 'Keycloak' },
-    { key: 'okta', value: 'Okta' },
-    { key: 'ping', value: 'Ping' },
-    { key: 'salesforce', value: 'Salesforce' },
-    { key: 'onelogin', value: 'OneLogin' },
-    { key: 'general', value: 'General' },
-  ];
-  authFlows = [
-    { key: 'implicit', value: 'Implicit' },
-    { key: 'PKCE', value: 'PKCE' },
-  ];
+  oidcServers = [...providers];
+  authFlows = [...flows];
   authConfig: string;
   clientID: string;
   discoveryURL: string;
