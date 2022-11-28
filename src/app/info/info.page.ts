@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { AuthenticationService } from '@app/core';
+import { Flow, Provider } from '@app/data';
+import { ProviderOptions } from '@ionic-enterprise/auth';
 import { Platform } from '@ionic/angular';
 
 @Component({
@@ -8,8 +10,11 @@ import { Platform } from '@ionic/angular';
   styleUrls: ['info.page.scss'],
 })
 export class InfoPage {
-  config: any;
+  config: ProviderOptions;
   configStr: string;
+  flow: Flow;
+  provider: Provider;
+  showFlow: boolean;
 
   loggedIn: boolean;
   accessToken: string | undefined;
@@ -22,10 +27,11 @@ export class InfoPage {
   ) {}
 
   async ionViewWillEnter() {
-    this.config = await this.authentication.getConfig(
-      this.platform.is('hybrid') ? 'mobile' : 'web'
-    );
+    this.showFlow = !this.platform.is('hybrid');
+    this.config = await this.authentication.getConfig();
     this.configStr = JSON.stringify(this.config, undefined, 2);
+    this.flow = await this.authentication.getFlow();
+    this.provider = await this.authentication.getProvider();
     this.loggedIn = await this.authentication.isAuthenticated();
     this.accessToken = await this.authentication.getAccessToken();
     this.accessTokenExpired = await this.authentication.accessTokenIsExpired();

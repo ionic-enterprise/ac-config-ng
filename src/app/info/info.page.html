@@ -26,11 +26,11 @@
   <h1>Current Configuration</h1>
   <dl>
     <dt>Provider</dt>
-    <dd>{{config?.authConfig}}</dd>
+    <dd>{{provider?.value}}</dd>
   </dl>
   <dl>
     <dt>Client ID</dt>
-    <dd>{{config?.clientID}}</dd>
+    <dd>{{config?.clientId}}</dd>
   </dl>
   <dl>
     <dt>Discovery URL</dt>
@@ -48,13 +48,13 @@
     <dt>Audience</dt>
     <dd>{{config?.audience}}</dd>
   </dl>
-  <dl>
+  <dl *ngIf="showFlow">
     <dt>Web Auth Flow</dt>
-    <dd>{{config?.webAuthFlow || "implicit (using default)"}}</dd>
+    <dd>{{flow?.value || "implicit (using default)"}}</dd>
   </dl>
-
   <h1>Raw Configuration</h1>
   <pre>{{ configStr }}</pre>
+
   <h1>Updating the Configuration</h1>
   <h2>General Configuration</h2>
   <p>

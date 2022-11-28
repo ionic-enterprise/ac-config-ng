@@ -1,12 +1,16 @@
 import { Component } from '@angular/core';
 import { AuthenticationService } from '@app/core';
-import { flows, providers } from '@app/data';
+import { Flow, flows, Provider, providers } from '@app/data';
 import {
   auth0Config,
   awsConfig,
   azureConfig,
+  mobileConfig,
   oktaConfig,
+  webConfig,
 } from '@env/environment';
+import { ProviderOptions } from '@ionic-enterprise/auth';
+import { Platform } from '@ionic/angular';
 
 @Component({
   selector: 'app-settings',
@@ -15,60 +19,107 @@ import {
 })
 export class SettingsPage {
   disableEdits: boolean;
+  showFlow: boolean;
   oidcServers = [...providers];
   authFlows = [...flows];
-  authConfig: string;
-  clientID: string;
-  discoveryURL: string;
+  clientId: string;
+  discoveryUrl: string;
   audience: string;
   scope: string;
-  webAuthFlow: string;
+  provider: Provider;
+  flow: Flow;
 
-  constructor(private authentication: AuthenticationService) {}
+  constructor(
+    private authentication: AuthenticationService,
+    private platform: Platform
+  ) {}
 
   async ionViewDidEnter() {
+    this.showFlow = !this.platform.is('hybrid');
     this.disableEdits = await this.authentication.isAuthenticated();
     return this.initCustomizableFields();
   }
 
   async useAzure(): Promise<void> {
-    await this.authentication.setBaseConfig(azureConfig);
+    const config: ProviderOptions = {
+      ...azureConfig,
+      ...(this.platform.is('hybrid') ? {} : webConfig),
+    };
+    await this.authentication.setConfig(
+      providers.find((p) => p.key === 'azure'),
+      config,
+      this.platform.is('hybrid')
+        ? undefined
+        : flows.find((f) => f.key === 'implicit')
+    );
     return this.initCustomizableFields();
   }
 
   async useAWS(): Promise<void> {
-    await this.authentication.setBaseConfig(awsConfig);
+    const config: ProviderOptions = {
+      ...awsConfig,
+      ...(this.platform.is('hybrid') ? {} : webConfig),
+    };
+    await this.authentication.setConfig(
+      providers.find((p) => p.key === 'cognito'),
+      config,
+      this.platform.is('hybrid')
+        ? undefined
+        : flows.find((f) => f.key === 'PKCE')
+    );
     return this.initCustomizableFields();
   }
 
   async useAuth0(): Promise<void> {
-    await this.authentication.setBaseConfig(auth0Config);
+    const config: ProviderOptions = {
+      ...auth0Config,
+      ...(this.platform.is('hybrid') ? {} : webConfig),
+    };
+    await this.authentication.setConfig(
+      providers.find((p) => p.key === 'auth0'),
+      config,
+      this.platform.is('hybrid')
+        ? undefined
+        : flows.find((f) => f.key === 'implicit')
+    );
     return this.initCustomizableFields();
   }
 
   async useOkta(): Promise<void> {
-    await this.authentication.setBaseConfig(oktaConfig);
+    const config: ProviderOptions = {
+      ...oktaConfig,
+      ...(this.platform.is('hybrid') ? {} : webConfig),
+    };
+    await this.authentication.setConfig(
+      providers.find((p) => p.key === 'okta'),
+      config,
+      this.platform.is('hybrid')
+        ? undefined
+        : flows.find((f) => f.key === 'PKCE')
+    );
     return this.initCustomizableFields();
   }
 
   async useCustomization(): Promise<void> {
-    return this.authentication.setBaseConfig({
-      authConfig: this.authConfig,
-      clientID: this.clientID,
-      discoveryUrl: this.discoveryURL,
+    const config: ProviderOptions = {
+      clientId: this.clientId,
+      discoveryUrl: this.discoveryUrl,
       scope: this.scope,
       audience: this.audience,
-      webAuthFlow: this.webAuthFlow,
-    });
+      ...(this.platform.is('hybrid') ? mobileConfig : webConfig),
+    };
+    return this.authentication.setConfig(this.provider, config, this.flow);
   }
 
   private async initCustomizableFields(): Promise<void> {
-    const config = await this.authentication.getBaseConfig();
-    this.authConfig = config.authConfig;
-    this.clientID = config.clientID;
-    this.discoveryURL = config.discoveryUrl;
+    const config = await this.authentication.getConfig();
+    this.clientId = config.clientId;
+    this.discoveryUrl = config.discoveryUrl;
     this.scope = config.scope;
     this.audience = config.audience;
-    this.webAuthFlow = config.webAuthFlow;
+    const flow = await this.authentication.getFlow();
+    this.flow = this.authFlows.find((f) => f.key === flow?.key);
+    const provider = await this.authentication.getProvider();
+    this.provider = this.oidcServers.find((p) => p.key === provider?.key);
   }
 }

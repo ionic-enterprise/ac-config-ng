@@ -15,7 +15,8 @@ dependencies {
     implementation project(':capacitor-preferences')
     implementation project(':capacitor-splash-screen')
     implementation project(':capacitor-status-bar')
-    implementation "androidx.browser:browser:1.3.0"
+    implementation project(':ionic-enterprise-auth')
+
 }
 
 

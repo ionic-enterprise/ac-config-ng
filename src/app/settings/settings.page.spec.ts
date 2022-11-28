@@ -4,13 +4,16 @@ import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { AuthenticationService } from '@app/core';
 import { createAuthenticationServiceMock } from '@app/core/testing';
+import { flows, providers } from '@app/data';
 import {
   auth0Config,
   awsConfig,
   azureConfig,
   oktaConfig,
+  webConfig,
 } from '@env/environment';
-import { IonicModule } from '@ionic/angular';
+import { IonicModule, Platform } from '@ionic/angular';
+import { createPlatformMock } from '@test/mocks';
 import { click, setInputValue } from '@test/util';
 import { SettingsPage } from './settings.page';
 
@@ -27,13 +30,26 @@ describe('SettingsPage', () => {
           provide: AuthenticationService,
           useFactory: createAuthenticationServiceMock,
         },
+        {
+          provide: Platform,
+          useFactory: createPlatformMock,
+        },
       ],
     }).compileComponents();
 
     const auth = TestBed.inject(AuthenticationService);
-    (auth.getBaseConfig as jasmine.Spy).and.resolveTo({
+    (auth.getConfig as jasmine.Spy).and.resolveTo({
       ...auth0Config,
     });
+    (auth.getProvider as jasmine.Spy).and.resolveTo({
+      ...providers.find((p) => p.key === 'auth0'),
+    });
+    (auth.getFlow as jasmine.Spy).and.resolveTo({
+      ...flows.find((p) => p.key === 'PKCE'),
+    });
+
+    const platform = TestBed.inject(Platform);
+    (platform.is as jasmine.Spy).withArgs('hybrid').and.returnValue(false);
 
     fixture = TestBed.createComponent(SettingsPage);
     component = fixture.componentInstance;
@@ -89,7 +105,7 @@ describe('SettingsPage', () => {
 
       it('is initialized', async () => {
         await component.ionViewDidEnter();
-        expect(input.nativeElement.value).toEqual(auth0Config.clientID);
+        expect(input.nativeElement.value).toEqual(auth0Config.clientId);
       });
 
       it('is disabled', () => {
@@ -188,12 +204,43 @@ describe('SettingsPage', () => {
         );
       });
 
-      it('saves the config', waitForAsync(() => {
-        const authentication = TestBed.inject(AuthenticationService);
-        click(fixture, button.nativeElement);
-        expect(authentication.setBaseConfig).toHaveBeenCalledTimes(1);
-        expect(authentication.setBaseConfig).toHaveBeenCalledWith(azureConfig);
-      }));
+      describe('on the web', () => {
+        beforeEach(() => {
+          const platform = TestBed.inject(Platform);
+          (platform.is as jasmine.Spy)
+            .withArgs('hybrid')
+            .and.returnValue(false);
+        });
+
+        it('saves the config', waitForAsync(() => {
+          const authentication = TestBed.inject(AuthenticationService);
+          click(fixture, button.nativeElement);
+          expect(authentication.setConfig).toHaveBeenCalledTimes(1);
+          expect(authentication.setConfig).toHaveBeenCalledWith(
+            providers.find((p) => p.key === 'azure'),
+            { ...azureConfig, ...webConfig },
+            flows.find((f) => f.key === 'implicit')
+          );
+        }));
+      });
+
+      describe('on mobile', () => {
+        beforeEach(() => {
+          const platform = TestBed.inject(Platform);
+          (platform.is as jasmine.Spy).withArgs('hybrid').and.returnValue(true);
+        });
+
+        it('saves the config', waitForAsync(() => {
+          const authentication = TestBed.inject(AuthenticationService);
+          click(fixture, button.nativeElement);
+          expect(authentication.setConfig).toHaveBeenCalledTimes(1);
+          expect(authentication.setConfig).toHaveBeenCalledWith(
+            providers.find((p) => p.key === 'azure'),
+            azureConfig,
+            undefined
+          );
+        }));
+      });
     });
 
     describe('aws button', () => {
@@ -202,12 +249,43 @@ describe('SettingsPage', () => {
         button = fixture.debugElement.query(By.css('[data-testid="use-aws"]'));
       });
 
-      it('saves the config', waitForAsync(() => {
-        const authentication = TestBed.inject(AuthenticationService);
-        click(fixture, button.nativeElement);
-        expect(authentication.setBaseConfig).toHaveBeenCalledTimes(1);
-        expect(authentication.setBaseConfig).toHaveBeenCalledWith(awsConfig);
-      }));
+      describe('on web', () => {
+        beforeEach(() => {
+          const platform = TestBed.inject(Platform);
+          (platform.is as jasmine.Spy)
+            .withArgs('hybrid')
+            .and.returnValue(false);
+        });
+
+        it('saves the config', waitForAsync(() => {
+          const authentication = TestBed.inject(AuthenticationService);
+          click(fixture, button.nativeElement);
+          expect(authentication.setConfig).toHaveBeenCalledTimes(1);
+          expect(authentication.setConfig).toHaveBeenCalledWith(
+            providers.find((p) => p.key === 'cognito'),
+            { ...awsConfig, ...webConfig },
+            flows.find((f) => f.key === 'PKCE')
+          );
+        }));
+      });
+
+      describe('on mobile', () => {
+        beforeEach(() => {
+          const platform = TestBed.inject(Platform);
+          (platform.is as jasmine.Spy).withArgs('hybrid').and.returnValue(true);
+        });
+
+        it('saves the config', waitForAsync(() => {
+          const authentication = TestBed.inject(AuthenticationService);
+          click(fixture, button.nativeElement);
+          expect(authentication.setConfig).toHaveBeenCalledTimes(1);
+          expect(authentication.setConfig).toHaveBeenCalledWith(
+            providers.find((p) => p.key === 'cognito'),
+            awsConfig,
+            undefined
+          );
+        }));
+      });
     });
 
     describe('auth0 button', () => {
@@ -218,12 +296,43 @@ describe('SettingsPage', () => {
         );
       });
 
-      it('saves the config', waitForAsync(() => {
-        const authentication = TestBed.inject(AuthenticationService);
-        click(fixture, button.nativeElement);
-        expect(authentication.setBaseConfig).toHaveBeenCalledTimes(1);
-        expect(authentication.setBaseConfig).toHaveBeenCalledWith(auth0Config);
-      }));
+      describe('on web', () => {
+        beforeEach(() => {
+          const platform = TestBed.inject(Platform);
+          (platform.is as jasmine.Spy)
+            .withArgs('hybrid')
+            .and.returnValue(false);
+        });
+
+        it('saves the config', waitForAsync(() => {
+          const authentication = TestBed.inject(AuthenticationService);
+          click(fixture, button.nativeElement);
+          expect(authentication.setConfig).toHaveBeenCalledTimes(1);
+          expect(authentication.setConfig).toHaveBeenCalledWith(
+            providers.find((p) => p.key === 'auth0'),
+            { ...auth0Config, ...webConfig },
+            flows.find((f) => f.key === 'implicit')
+          );
+        }));
+      });
+
+      describe('on mobile', () => {
+        beforeEach(() => {
+          const platform = TestBed.inject(Platform);
+          (platform.is as jasmine.Spy).withArgs('hybrid').and.returnValue(true);
+        });
+
+        it('saves the config', waitForAsync(() => {
+          const authentication = TestBed.inject(AuthenticationService);
+          click(fixture, button.nativeElement);
+          expect(authentication.setConfig).toHaveBeenCalledTimes(1);
+          expect(authentication.setConfig).toHaveBeenCalledWith(
+            providers.find((p) => p.key === 'auth0'),
+            auth0Config,
+            undefined
+          );
+        }));
+      });
     });
 
     describe('okta button', () => {
@@ -232,12 +341,43 @@ describe('SettingsPage', () => {
         button = fixture.debugElement.query(By.css('[data-testid="use-okta"]'));
       });
 
-      it('saves the config', waitForAsync(() => {
-        const authentication = TestBed.inject(AuthenticationService);
-        click(fixture, button.nativeElement);
-        expect(authentication.setBaseConfig).toHaveBeenCalledTimes(1);
-        expect(authentication.setBaseConfig).toHaveBeenCalledWith(oktaConfig);
-      }));
+      describe('on web', () => {
+        beforeEach(() => {
+          const platform = TestBed.inject(Platform);
+          (platform.is as jasmine.Spy)
+            .withArgs('hybrid')
+            .and.returnValue(false);
+        });
+
+        it('saves the config', waitForAsync(() => {
+          const authentication = TestBed.inject(AuthenticationService);
+          click(fixture, button.nativeElement);
+          expect(authentication.setConfig).toHaveBeenCalledTimes(1);
+          expect(authentication.setConfig).toHaveBeenCalledWith(
+            providers.find((p) => p.key === 'okta'),
+            { ...oktaConfig, ...webConfig },
+            flows.find((f) => f.key === 'PKCE')
+          );
+        }));
+      });
+
+      describe('on mobile', () => {
+        beforeEach(() => {
+          const platform = TestBed.inject(Platform);
+          (platform.is as jasmine.Spy).withArgs('hybrid').and.returnValue(true);
+        });
+
+        it('saves the config', waitForAsync(() => {
+          const authentication = TestBed.inject(AuthenticationService);
+          click(fixture, button.nativeElement);
+          expect(authentication.setConfig).toHaveBeenCalledTimes(1);
+          expect(authentication.setConfig).toHaveBeenCalledWith(
+            providers.find((p) => p.key === 'okta'),
+            oktaConfig,
+            undefined
+          );
+        }));
+      });
     });
 
     describe('customize button', () => {
@@ -248,41 +388,101 @@ describe('SettingsPage', () => {
         );
       });
 
-      it('saves the config', waitForAsync(() => {
-        let input = fixture.debugElement.query(
-          By.css('[data-testid="client-id-input"]')
-        );
-        setInputValue(fixture, input.nativeElement, '1994-9940fks');
-        input = fixture.debugElement.query(
-          By.css('[data-testid="discovery-url-input"]')
-        );
-        setInputValue(
-          fixture,
-          input.nativeElement,
-          'https://foo.bar.disco/.well-known/sticky-buns'
-        );
-        input = fixture.debugElement.query(
-          By.css('[data-testid="scope-input"]')
-        );
-        setInputValue(fixture, input.nativeElement, 'email offline');
-        input = fixture.debugElement.query(
-          By.css('[data-testid="audience-input"]')
-        );
-        setInputValue(fixture, input.nativeElement, 'people');
-        component.authConfig = 'ping';
-        component.webAuthFlow = 'implicit';
-        const authentication = TestBed.inject(AuthenticationService);
-        click(fixture, button.nativeElement);
-        expect(authentication.setBaseConfig).toHaveBeenCalledTimes(1);
-        expect(authentication.setBaseConfig).toHaveBeenCalledWith({
-          authConfig: 'ping',
-          clientID: '1994-9940fks',
-          discoveryUrl: 'https://foo.bar.disco/.well-known/sticky-buns',
-          scope: 'email offline',
-          audience: 'people',
-          webAuthFlow: 'implicit',
+      describe('on web', () => {
+        beforeEach(() => {
+          const platform = TestBed.inject(Platform);
+          (platform.is as jasmine.Spy)
+            .withArgs('hybrid')
+            .and.returnValue(false);
         });
-      }));
+
+        it('saves the config', waitForAsync(() => {
+          let input = fixture.debugElement.query(
+            By.css('[data-testid="client-id-input"]')
+          );
+          setInputValue(fixture, input.nativeElement, '1994-9940fks');
+          input = fixture.debugElement.query(
+            By.css('[data-testid="discovery-url-input"]')
+          );
+          setInputValue(
+            fixture,
+            input.nativeElement,
+            'https://foo.bar.disco/.well-known/sticky-buns'
+          );
+          input = fixture.debugElement.query(
+            By.css('[data-testid="scope-input"]')
+          );
+          setInputValue(fixture, input.nativeElement, 'email offline');
+          input = fixture.debugElement.query(
+            By.css('[data-testid="audience-input"]')
+          );
+          setInputValue(fixture, input.nativeElement, 'people');
+          component.flow = flows.find((f) => f.key === 'PKCE');
+          component.provider = providers.find((p) => p.key === 'onelogin');
+          const authentication = TestBed.inject(AuthenticationService);
+          click(fixture, button.nativeElement);
+          expect(authentication.setConfig).toHaveBeenCalledTimes(1);
+          expect(authentication.setConfig).toHaveBeenCalledWith(
+            providers.find((p) => p.key === 'onelogin'),
+            {
+              clientId: '1994-9940fks',
+              discoveryUrl: 'https://foo.bar.disco/.well-known/sticky-buns',
+              logoutUrl: 'http://localhost:8100/login',
+              redirectUri: 'http://localhost:8100/login',
+              scope: 'email offline',
+              audience: 'people',
+            },
+            flows.find((f) => f.key === 'PKCE')
+          );
+        }));
+      });
+
+      describe('on mobile', () => {
+        beforeEach(() => {
+          const platform = TestBed.inject(Platform);
+          (platform.is as jasmine.Spy).withArgs('hybrid').and.returnValue(true);
+        });
+
+        it('saves the config', waitForAsync(() => {
+          let input = fixture.debugElement.query(
+            By.css('[data-testid="client-id-input"]')
+          );
+          setInputValue(fixture, input.nativeElement, '1994-9940fks');
+          input = fixture.debugElement.query(
+            By.css('[data-testid="discovery-url-input"]')
+          );
+          setInputValue(
+            fixture,
+            input.nativeElement,
+            'https://foo.bar.disco/.well-known/sticky-buns'
+          );
+          input = fixture.debugElement.query(
+            By.css('[data-testid="scope-input"]')
+          );
+          setInputValue(fixture, input.nativeElement, 'email offline');
+          input = fixture.debugElement.query(
+            By.css('[data-testid="audience-input"]')
+          );
+          setInputValue(fixture, input.nativeElement, 'people');
+          component.flow = undefined;
+          component.provider = providers.find((p) => p.key === 'onelogin');
+          const authentication = TestBed.inject(AuthenticationService);
+          click(fixture, button.nativeElement);
+          expect(authentication.setConfig).toHaveBeenCalledTimes(1);
+          expect(authentication.setConfig).toHaveBeenCalledWith(
+            providers.find((p) => p.key === 'onelogin'),
+            {
+              clientId: '1994-9940fks',
+              discoveryUrl: 'https://foo.bar.disco/.well-known/sticky-buns',
+              logoutUrl: 'msauth://login',
+              redirectUri: 'msauth://login',
+              scope: 'email offline',
+              audience: 'people',
+            },
+            undefined
+          );
+        }));
+      });
     });
 
     describe('client ID', () => {
@@ -295,7 +495,7 @@ describe('SettingsPage', () => {
 
       it('is initialized', async () => {
         await component.ionViewDidEnter();
-        expect(input.nativeElement.value).toEqual(auth0Config.clientID);
+        expect(input.nativeElement.value).toEqual(auth0Config.clientId);
       });
 
       it('is enabled', () => {

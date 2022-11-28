@@ -58,18 +58,18 @@
     <ion-list-header> Customize </ion-list-header>
     <ion-item>
       <ion-select
-        [(ngModel)]="authConfig"
+        [(ngModel)]="provider"
         [disabled]="disableEdits"
         label="Auth Config"
       >
-        <ion-select-option *ngFor="let s of oidcServers" [value]="s.key"
+        <ion-select-option *ngFor="let s of oidcServers" [value]="s"
           >{{s.value}}</ion-select-option
         >
       </ion-select>
     </ion-item>
     <ion-item>
       <ion-input
-        [(ngModel)]="clientID"
+        [(ngModel)]="clientId"
         [disabled]="disableEdits"
         data-testid="client-id-input"
         labelPlacement="floating"
@@ -78,7 +78,7 @@
     </ion-item>
     <ion-item>
       <ion-input
-        [(ngModel)]="discoveryURL"
+        [(ngModel)]="discoveryUrl"
         [disabled]="disableEdits"
         data-testid="discovery-url-input"
         label="Discovery URL"
@@ -103,13 +103,13 @@
         labelPlacement="floating"
       ></ion-input>
     </ion-item>
-    <ion-item>
+    <ion-item *ngIf="showFlow">
       <ion-select
-        [(ngModel)]="webAuthFlow"
+        [(ngModel)]="flow"
         [disabled]="disableEdits"
         label="Web Auth Flow"
       >
-        <ion-select-option *ngFor="let s of authFlows" [value]="s.key"
+        <ion-select-option *ngFor="let s of authFlows" [value]="s"
           >{{s.value}}</ion-select-option
         >
       </ion-select>
