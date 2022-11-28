@@ -73,9 +73,6 @@ If you change the `implicitLogin` from the default of `POPUP` to `CURRENT` you w
 With `CURRENT`, the current web context is used for the login. When doing so, all session state is lost. Also, upon
 returning to the application, the auth token will be provided as a query parameter that needs to be extracted.
 
-The code needs to be changed to handle all of this.
-
-Using `CURRENT` is not suggested as it requires an `implicit` login flow that puts the token in the callback URL.
-As a result, it is nowhere near as secure as using `PKCE` on the web.
+Using `CURRENT` is not suggested due to the extra complexity of coding that is required, and because information is passed via the callback URL rather than in headers. For the web, we suggest `PKCE` for web using a "popup" interface (note that some users will very likely have to adjust their popup blocker settings, but that can be addressed via information displayed in your app if you so wish).
 
 Happy Coding!!
