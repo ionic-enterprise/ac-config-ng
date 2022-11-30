@@ -41,6 +41,7 @@ describe('TestConnectionPage', () => {
     beforeEach(async () => {
       const auth = TestBed.inject(AuthenticationService);
       (auth.isAuthenticated as jasmine.Spy).and.resolveTo(true);
+      (auth.canRefresh as jasmine.Spy).and.resolveTo(true);
       await component.ionViewDidEnter();
       fixture.detectChanges();
     });
@@ -64,6 +65,17 @@ describe('TestConnectionPage', () => {
         By.css('[data-testid="refresh-button"]')
       );
       expect(button.nativeElement.disabled).toBe(false);
+    });
+
+    it('disables the refresh if it is indicated that refresh is not available', async () => {
+      const auth = TestBed.inject(AuthenticationService);
+      (auth.canRefresh as jasmine.Spy).and.resolveTo(false);
+      await component.ionViewDidEnter();
+      fixture.detectChanges();
+      const button = fixture.debugElement.query(
+        By.css('[data-testid="refresh-button"]')
+      );
+      expect(button.nativeElement.disabled).toBe(true);
     });
 
     it('calls refresh when refresh clicked', () => {
@@ -101,6 +113,7 @@ describe('TestConnectionPage', () => {
     beforeEach(async () => {
       const auth = TestBed.inject(AuthenticationService);
       (auth.isAuthenticated as jasmine.Spy).and.resolveTo(false);
+      (auth.canRefresh as jasmine.Spy).and.resolveTo(false);
       await component.ionViewDidEnter();
       fixture.detectChanges();
     });

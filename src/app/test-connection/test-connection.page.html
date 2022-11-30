@@ -29,7 +29,7 @@
           {{loggedIn ? "Log Out" : "Log In"}}
         </ion-button>
         <ion-button
-          [disabled]="!loggedIn"
+          [disabled]="!canRefresh"
           data-testid="refresh-button"
           (click)="refresh()"
           >Refresh</ion-button

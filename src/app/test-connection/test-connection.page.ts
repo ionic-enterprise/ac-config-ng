@@ -9,11 +9,12 @@ import { AuthenticationService } from '@app/core';
 export class TestConnectionPage {
   loggedIn: boolean;
   errorMessage: string;
+  canRefresh: boolean;
 
   constructor(private authentication: AuthenticationService) {}
 
   async ionViewDidEnter(): Promise<void> {
-    this.loggedIn = await this.authentication.isAuthenticated();
+    await this.checkLoginStatus();
   }
 
   async handleAuth(): Promise<void> {
@@ -24,8 +25,13 @@ export class TestConnectionPage {
     }
   }
 
-  refresh(): Promise<void> {
-    return this.authentication.refresh();
+  async refresh(): Promise<void> {
+    this.errorMessage = '';
+    try {
+      await this.authentication.refresh();
+    } catch (err: any) {
+      this.errorMessage = err;
+    }
   }
 
   private async performAuthAction(): Promise<void> {
@@ -35,6 +41,11 @@ export class TestConnectionPage {
     } else {
       await this.authentication.login();
     }
+    this.checkLoginStatus();
+  }
+
+  private async checkLoginStatus(): Promise<void> {
     this.loggedIn = await this.authentication.isAuthenticated();
+    this.canRefresh = await this.authentication.canRefresh();
   }
 }

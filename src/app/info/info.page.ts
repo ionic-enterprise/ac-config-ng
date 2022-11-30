@@ -11,6 +11,11 @@ export class InfoPage {
   config: any;
   configStr: string;
 
+  loggedIn: boolean;
+  accessToken: string | undefined;
+  accessTokenExpired: boolean;
+  refreshAvailable: boolean;
+
   constructor(
     private authentication: AuthenticationService,
     private platform: Platform
@@ -21,5 +26,9 @@ export class InfoPage {
       this.platform.is('hybrid') ? 'mobile' : 'web'
     );
     this.configStr = JSON.stringify(this.config, undefined, 2);
+    this.loggedIn = await this.authentication.isAuthenticated();
+    this.accessToken = await this.authentication.getAccessToken();
+    this.accessTokenExpired = await this.authentication.accessTokenIsExpired();
+    this.refreshAvailable = await this.authentication.canRefresh();
   }
 }

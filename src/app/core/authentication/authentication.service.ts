@@ -69,6 +69,23 @@ export class AuthenticationService {
     return this.authenticator.refreshSession();
   }
 
+  async canRefresh(): Promise<boolean> {
+    await this.initialize();
+    return this.authenticator.isRefreshTokenAvailable();
+  }
+
+  async accessTokenIsExpired(): Promise<boolean> {
+    await this.initialize();
+    return this.authenticator.isAccessTokenExpired();
+  }
+
+  async getAccessToken(): Promise<string | undefined> {
+    await this.initialize();
+    return (await this.authenticator.isAuthenticated())
+      ? this.authenticator.getAccessToken()
+      : undefined;
+  }
+
   async isAuthenticated(): Promise<boolean> {
     await this.initialize();
     return this.authenticator.isAuthenticated();
