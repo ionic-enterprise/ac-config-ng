@@ -8,7 +8,7 @@ export const auth0Config: IonicAuthOptions = {
   discoveryUrl:
     'https://dev-2uspt-sz.us.auth0.com/.well-known/openid-configuration',
   logoutUrl: '',
-  scope: 'openid email picture profile',
+  scope: 'openid email picture profile offline_access',
 };
 
 export const awsConfig = {
@@ -16,7 +16,7 @@ export const awsConfig = {
   clientID: '64p9c53l5thd5dikra675suvq9',
   discoveryUrl:
     'https://cognito-idp.us-east-2.amazonaws.com/us-east-2_YU8VQe29z/.well-known/openid-configuration',
-  scope: 'openid email profile',
+  scope: 'openid email profile offline_access',
   audience: '',
   webAuthFlow: 'PKCE' as 'PKCE',
 };
@@ -36,7 +36,7 @@ export const oktaConfig = {
   clientID: '0oaur4c907I5uMr4I0h7',
   discoveryUrl:
     'https://dev-622807.oktapreview.com/.well-known/openid-configuration',
-  scope: 'openid email profile',
+  scope: 'openid email profile offline_access',
   audience: '',
   webAuthFlow: 'PKCE' as 'PKCE',
 };
