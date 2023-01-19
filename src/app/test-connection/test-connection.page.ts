@@ -29,6 +29,8 @@ export class TestConnectionPage {
     this.errorMessage = '';
     try {
       await this.authentication.refresh();
+      alert('Refresh Successful!!');
+      this.checkLoginStatus();
     } catch (err: any) {
       this.errorMessage = err;
     }
