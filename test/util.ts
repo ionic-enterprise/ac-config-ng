@@ -13,7 +13,7 @@ export const setInputValue = <T>(
   input: HTMLIonInputElement,
   value: string
 ) => {
-  const event = new InputEvent('ionChange');
+  const event = new InputEvent('ionInput');
   input.value = value;
   input.dispatchEvent(event);
   fixture.detectChanges();
