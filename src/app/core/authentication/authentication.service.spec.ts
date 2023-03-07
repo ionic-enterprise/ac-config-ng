@@ -96,7 +96,7 @@ describe('AuthenticationService', () => {
           webView: 'private',
         },
         web: {
-          implicitLogin: 'popup',
+          uiMode: 'popup',
           authFlow: 'implicit',
         },
       });
@@ -114,7 +114,7 @@ describe('AuthenticationService', () => {
           webView: 'private',
         },
         web: {
-          implicitLogin: 'popup',
+          uiMode: 'popup',
           authFlow: flows[1].key,
         },
       });

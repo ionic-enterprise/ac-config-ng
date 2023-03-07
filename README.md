@@ -51,7 +51,7 @@ There are three configuration items, however, that you may want to change that w
 
 - redirectUri
 - logoutUrl
-- implicitLogin
+- uiMode
 
 In all cases, you will need to modify these directly in the `environment.ts` and `environment.prod.ts` files.
 
@@ -67,9 +67,9 @@ something like `com.your-domain.appname` instead. Such a change requires:
 
 All three of the above items needs to match.
 
-### Updating the `implicitLogin`
+### Updating the `uiMode`
 
-If you change the `implicitLogin` from the default of `POPUP` to `CURRENT` you will need to change the code as well.
+If you change the `uiMode` from the default of `POPUP` to `CURRENT` you will need to change the code as well.
 With `CURRENT`, the current web context is used for the login. When doing so, all session state is lost. Also, upon
 returning to the application, the auth token will be provided as a query parameter that needs to be extracted.
 
