@@ -8,7 +8,6 @@ import {
 import { By } from '@angular/platform-browser';
 import { AuthenticationService } from '@app/core';
 import { createAuthenticationServiceMock } from '@app/core/testing';
-import { IonicModule } from '@ionic/angular';
 import { click } from '@test/util';
 import { TestConnectionPage } from './test-connection.page';
 
@@ -18,15 +17,12 @@ describe('TestConnectionPage', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [TestConnectionPage],
-      imports: [IonicModule],
-      providers: [
-        {
-          provide: AuthenticationService,
-          useFactory: createAuthenticationServiceMock,
-        },
-      ],
-    }).compileComponents();
+      imports: [TestConnectionPage],
+    })
+      .overrideProvider(AuthenticationService, {
+        useFactory: createAuthenticationServiceMock,
+      })
+      .compileComponents();
 
     fixture = TestBed.createComponent(TestConnectionPage);
     component = fixture.componentInstance;

@@ -1,6 +1,5 @@
 import { DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { AuthenticationService } from '@app/core';
 import { createAuthenticationServiceMock } from '@app/core/testing';
@@ -12,7 +11,7 @@ import {
   oktaConfig,
   webConfig,
 } from '@env/environment';
-import { IonicModule, Platform } from '@ionic/angular';
+import { Platform } from '@ionic/angular';
 import { createPlatformMock } from '@test/mocks';
 import { click, setInputValue } from '@test/util';
 import { SettingsPage } from './settings.page';
@@ -23,19 +22,13 @@ describe('SettingsPage', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [SettingsPage],
-      imports: [IonicModule, FormsModule],
-      providers: [
-        {
-          provide: AuthenticationService,
-          useFactory: createAuthenticationServiceMock,
-        },
-        {
-          provide: Platform,
-          useFactory: createPlatformMock,
-        },
-      ],
-    }).compileComponents();
+      imports: [SettingsPage],
+    })
+      .overrideProvider(AuthenticationService, {
+        useFactory: createAuthenticationServiceMock,
+      })
+      .overrideProvider(Platform, { useFactory: createPlatformMock })
+      .compileComponents();
 
     const auth = TestBed.inject(AuthenticationService);
     (auth.getConfig as jasmine.Spy).and.resolveTo({

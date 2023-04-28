@@ -1,4 +1,6 @@
+import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { AuthenticationService } from '@app/core';
 import { Flow, flows, Provider, providers } from '@app/data';
 import {
@@ -10,12 +12,14 @@ import {
   webConfig,
 } from '@env/environment';
 import { ProviderOptions } from '@ionic-enterprise/auth';
-import { Platform } from '@ionic/angular';
+import { IonicModule, Platform } from '@ionic/angular';
 
 @Component({
   selector: 'app-settings',
   templateUrl: 'settings.page.html',
   styleUrls: ['settings.page.scss'],
+  standalone: true,
+  imports: [IonicModule, CommonModule, FormsModule],
 })
 export class SettingsPage {
   disableEdits: boolean;

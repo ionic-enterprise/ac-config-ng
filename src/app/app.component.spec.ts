@@ -1,13 +1,13 @@
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { TestBed, waitForAsync } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
 import { SplashScreen } from '@capacitor/splash-screen';
 import { AppComponent } from './app.component';
 
 describe('AppComponent', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [AppComponent],
-      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+      imports: [AppComponent],
+      providers: [provideRouter([])],
     }).compileComponents();
   }));
 
