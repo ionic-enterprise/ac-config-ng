@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 
@@ -10,8 +10,4 @@ import { IonicModule } from '@ionic/angular';
   standalone: true,
   imports: [CommonModule, FormsModule, IonicModule],
 })
-export class LoginPage implements OnInit {
-  constructor() {}
-
-  ngOnInit() {}
-}
+export class LoginPage {}
