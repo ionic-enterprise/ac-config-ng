@@ -6,8 +6,8 @@ export const auth0Config: ProviderOptions = {
   clientId: 'yLasZNUGkZ19DGEjTmAITBfGXzqbvd00',
   discoveryUrl:
     'https://dev-2uspt-sz.us.auth0.com/.well-known/openid-configuration',
-  redirectUri: 'msauth://login',
-  logoutUrl: 'msauth://login',
+  redirectUri: 'msauth://auth-action-complete',
+  logoutUrl: 'msauth://auth-action-complete',
   scope: 'openid email picture profile offline_access',
 };
 
@@ -15,8 +15,8 @@ export const awsConfig: ProviderOptions = {
   clientId: '64p9c53l5thd5dikra675suvq9',
   discoveryUrl:
     'https://cognito-idp.us-east-2.amazonaws.com/us-east-2_YU8VQe29z/.well-known/openid-configuration',
-  redirectUri: 'msauth://login',
-  logoutUrl: 'msauth://login',
+  redirectUri: 'msauth://auth-action-complete',
+  logoutUrl: 'msauth://auth-action-complete',
   scope: 'openid email profile',
   audience: '',
 };
@@ -36,20 +36,20 @@ export const oktaConfig: ProviderOptions = {
   clientId: '0oaur4c907I5uMr4I0h7',
   discoveryUrl:
     'https://dev-622807.oktapreview.com/.well-known/openid-configuration',
-  redirectUri: 'msauth://login',
-  logoutUrl: 'msauth://login',
+  redirectUri: 'msauth://auth-action-complete',
+  logoutUrl: 'msauth://auth-action-complete',
   scope: 'openid email profile offline_access',
   audience: '',
 };
 
 export const webConfig = {
-  redirectUri: 'http://localhost:8100/login',
-  logoutUrl: 'http://localhost:8100/login',
+  redirectUri: 'http://localhost:8100/auth-action-complete',
+  logoutUrl: 'http://localhost:8100/auth-action-complete',
 };
 
 export const mobileConfig = {
-  redirectUri: 'msauth://login',
-  logoutUrl: 'msauth://login',
+  redirectUri: 'msauth://auth-action-complete',
+  logoutUrl: 'msauth://auth-action-complete',
 };
 
 export const environment = {

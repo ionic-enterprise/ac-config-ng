@@ -17,8 +17,8 @@ describe('AuthenticationService', () => {
   const opt: ProviderOptions = {
     clientId: '4273afw',
     discoveryUrl: 'https://some.azure.server/.well-known/openid-configuration',
-    redirectUri: 'msauth://login',
-    logoutUrl: 'msauth://login',
+    redirectUri: 'msauth://auth-action-complete',
+    logoutUrl: 'msauth://auth-action-complete',
     scope: 'openid email profile',
     audience: 'all-the-users',
   };
@@ -417,8 +417,8 @@ describe('AuthenticationService', () => {
             key: 'auth-provider-options',
             value: JSON.stringify({
               ...awsConfig,
-              redirectUri: 'http://localhost:8100/login',
-              logoutUrl: 'http://localhost:8100/login',
+              redirectUri: 'http://localhost:8100/auth-action-complete',
+              logoutUrl: 'http://localhost:8100/auth-action-complete',
             }),
           });
           expect(Preferences.set).toHaveBeenCalledWith({

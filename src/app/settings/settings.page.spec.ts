@@ -420,8 +420,8 @@ describe('SettingsPage', () => {
             {
               clientId: '1994-9940fks',
               discoveryUrl: 'https://foo.bar.disco/.well-known/sticky-buns',
-              logoutUrl: 'http://localhost:8100/login',
-              redirectUri: 'http://localhost:8100/login',
+              logoutUrl: 'http://localhost:8100/auth-action-complete',
+              redirectUri: 'http://localhost:8100/auth-action-complete',
               scope: 'email offline',
               audience: 'people',
             },
@@ -467,8 +467,8 @@ describe('SettingsPage', () => {
             {
               clientId: '1994-9940fks',
               discoveryUrl: 'https://foo.bar.disco/.well-known/sticky-buns',
-              logoutUrl: 'msauth://login',
-              redirectUri: 'msauth://login',
+              logoutUrl: 'msauth://auth-action-complete',
+              redirectUri: 'msauth://auth-action-complete',
               scope: 'email offline',
               audience: 'people',
             },
