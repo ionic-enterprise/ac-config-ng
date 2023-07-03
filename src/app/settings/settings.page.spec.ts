@@ -15,12 +15,14 @@ import { Platform } from '@ionic/angular';
 import { createPlatformMock } from '@test/mocks';
 import { click, setInputValue } from '@test/util';
 import { SettingsPage } from './settings.page';
+import { config } from '../../config';
 
 describe('SettingsPage', () => {
   let component: SettingsPage;
   let fixture: ComponentFixture<SettingsPage>;
 
   beforeEach(waitForAsync(() => {
+    config.authUrlScheme = 'msauth';
     TestBed.configureTestingModule({
       imports: [SettingsPage],
     })
@@ -187,6 +189,40 @@ describe('SettingsPage', () => {
       expect(button.nativeElement.disabled).toBe(false);
       button = fixture.debugElement.query(By.css('[data-testid="use-okta"]'));
       expect(button.nativeElement.disabled).toBe(false);
+      button = fixture.debugElement.query(
+        By.css('[data-testid="use-customization"]')
+      );
+      expect(button.nativeElement.disabled).toBe(false);
+    });
+
+    describe('with a non-standard auth URL scheme', () => {
+      beforeEach(async () => {
+        config.authUrlScheme = 'com.something.somewhere';
+        await component.ionViewDidEnter();
+        fixture.detectChanges();
+      });
+
+      it('disabled the big four templates', () => {
+        let button = fixture.debugElement.query(
+          By.css('[data-testid="use-azure"]')
+        );
+        expect(button.nativeElement.disabled).toBe(true);
+        button = fixture.debugElement.query(By.css('[data-testid="use-aws"]'));
+        expect(button.nativeElement.disabled).toBe(true);
+        button = fixture.debugElement.query(
+          By.css('[data-testid="use-auth0"]')
+        );
+        expect(button.nativeElement.disabled).toBe(true);
+        button = fixture.debugElement.query(By.css('[data-testid="use-okta"]'));
+        expect(button.nativeElement.disabled).toBe(true);
+      });
+
+      it('allows customization', () => {
+        const button = fixture.debugElement.query(
+          By.css('[data-testid="use-customization"]')
+        );
+        expect(button.nativeElement.disabled).toBe(false);
+      });
     });
 
     describe('azure button', () => {

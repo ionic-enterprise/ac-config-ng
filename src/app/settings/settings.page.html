@@ -16,7 +16,7 @@
         <ion-button
           expand="full"
           data-testid="use-azure"
-          [disabled]="disableEdits"
+          [disabled]="disableTemplates"
           (click)="useAzure()"
           >Use Azure</ion-button
         >
@@ -27,7 +27,7 @@
         <ion-button
           expand="full"
           data-testid="use-aws"
-          [disabled]="disableEdits"
+          [disabled]="disableTemplates"
           (click)="useAWS()"
           >Use Cognito</ion-button
         >
@@ -38,7 +38,7 @@
         <ion-button
           expand="full"
           data-testid="use-auth0"
-          [disabled]="disableEdits"
+          [disabled]="disableTemplates"
           (click)="useAuth0()"
           >Use Auth0</ion-button
         >
@@ -49,7 +49,7 @@
         <ion-button
           expand="full"
           data-testid="use-okta"
-          [disabled]="disableEdits"
+          [disabled]="disableTemplates"
           (click)="useOkta()"
           >Use Okta</ion-button
         >

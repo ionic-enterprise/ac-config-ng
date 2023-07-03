@@ -1,4 +1,5 @@
 import { ProviderOptions } from '@ionic-enterprise/auth';
+import { config } from '../config';
 
 export const auth0Config: ProviderOptions = {
   // audience value is required for auth0's config. If it doesn't exist, the jwt payload will be empty
@@ -48,8 +49,8 @@ export const webConfig = {
 };
 
 export const mobileConfig = {
-  redirectUri: 'msauth://auth-action-complete',
-  logoutUrl: 'msauth://auth-action-complete',
+  redirectUri: `${config.authUrlScheme}://auth-action-complete`,
+  logoutUrl: `${config.authUrlScheme}://auth-action-complete`,
 };
 
 export const environment = {

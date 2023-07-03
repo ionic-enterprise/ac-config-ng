@@ -18,6 +18,36 @@ Once the access is set up, the build processes is the same as for most Ionic app
 - to run on an Android device: `ionic cap run android`
 - to run on an iOS device: `ionic cap run ios` (you may need to run `ionic cap start ios` and update the development team)
 
+## Native Configuration Files
+
+The `npm run build` command potentially modifies the following files:
+
+```
+android/app/build.gradle
+android/app/src/main/AndroidManifest.xml
+ios/App/App/Info.plist
+src/config.ts
+```
+
+Do not commit changes to the `android/app/build.gradle` file. The `trapeze` tool adds the following code to it:
+
+```diff
+--- a/android/app/build.gradle
++++ b/android/app/build.gradle
+@@ -15,6 +15,7 @@ android {
+              // Default: https://android.googlesource.com/platform/frameworks/base/+/282e181b58cf72b6ca770dc7ca5f91f135444502/tools/aapt/AaptAssets.cpp#61
+             ignoreAssetsPattern '!.svn:!.git:!.ds_store:!*.scc:.*:!CVS:!thumbs.db:!picasa.ini:!*~'
+         }
++        manifestPlaceholders = ['AUTH_URL_SCHEME': 'msauth']
+     }
+     buildTypes {
+         release {
+```
+
+This is currently performed as an add and not an update due to [limitations in the tooling](https://github.com/ionic-team/trapeze/issues/157).
+
+Changes to the native files can be reverted to the committed content via `npm run clean`.
+
 ## Pages
 
 ### Test Connection
@@ -58,14 +88,14 @@ In all cases, you will need to modify these directly in the `environment.ts` and
 ### Updating the `redirectUri` and the `logoutUrl`
 
 For the `redirectUri` and `logoutUrl`, you will need to also update the allowable schema in the `Info.plist` and
-`AndroidManifest.xml` files. This application uses `msauth` as the protocol. For your own app we suggest using
-something like `com.your-domain.appname` instead. Such a change requires:
+`app/build.gradle` files.
 
-- modification to the `environment.ts` and `environment.prod.ts` files
-- modification to the `Info.plist` and `AndroidManifest.xml` files
-- modification to the OIDC provider setup to allow the redirect and logout URIs
+This application uses `msauth` as the protocol. Our Azure instance requires `msauth`, so we use that for the other
+three just to keep the code simple. For your own app we suggest using something like `com.your-domain.appname` instead.
+You can change this in your build by changing the `AUTH_URL_SCHEME` in the `.env` file and running `npm run build` again.
 
-All three of the above items needs to match.
+To use the modified `AUTH_URL_SCHEME`, go to the Settings page, set the custmizable configuration settings as desired,
+and press the `Use Customization` button.
 
 ### Updating the `uiMode`
 

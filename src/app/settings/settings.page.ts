@@ -13,6 +13,7 @@ import {
 } from '@env/environment';
 import { ProviderOptions } from '@ionic-enterprise/auth';
 import { IonicModule, Platform } from '@ionic/angular';
+import { config } from '../../config';
 
 @Component({
   selector: 'app-settings',
@@ -23,6 +24,7 @@ import { IonicModule, Platform } from '@ionic/angular';
 })
 export class SettingsPage {
   disableEdits: boolean;
+  disableTemplates: boolean;
   showFlow: boolean;
   oidcServers = [...providers];
   authFlows = [...flows];
@@ -41,6 +43,8 @@ export class SettingsPage {
   async ionViewDidEnter() {
     this.showFlow = !this.platform.is('hybrid');
     this.disableEdits = await this.authentication.isAuthenticated();
+    this.disableTemplates =
+      this.disableEdits || config.authUrlScheme !== 'msauth';
     return this.initCustomizableFields();
   }
 

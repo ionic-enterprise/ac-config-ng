@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Flow, flows, Provider, providers } from '@app/data';
 import { Preferences } from '@capacitor/preferences';
-import { awsConfig, webConfig } from '@env/environment';
+import { awsConfig, mobileConfig, webConfig } from '@env/environment';
 import {
   Auth0Provider,
   CognitoProvider,
@@ -188,7 +188,10 @@ export class AuthenticationService {
   private setDefaultConfigMobile(): Promise<void> {
     return this.setConfig(
       providers.find((p) => p.key === 'cognito'),
-      awsConfig
+      {
+        ...awsConfig,
+        ...mobileConfig,
+      }
     );
   }
 
