@@ -32,7 +32,7 @@ export class TestConnectionPage {
     }
   }
 
-  async refresh(): Promise<void> {
+  async handleRefresh(): Promise<void> {
     try {
       await this.authentication.refresh();
       this.displayRefreshSuccess = true;

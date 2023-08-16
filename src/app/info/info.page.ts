@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AuthenticationService } from '@app/core';
 import { Flow, Provider } from '@app/data';
+import { YesNoPipe } from '@app/shared/yes-no.pipe';
 import { ProviderOptions } from '@ionic-enterprise/auth';
 import { IonicModule, Platform } from '@ionic/angular';
 
@@ -11,7 +12,7 @@ import { IonicModule, Platform } from '@ionic/angular';
   templateUrl: 'info.page.html',
   styleUrls: ['info.page.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule],
+  imports: [IonicModule, CommonModule, FormsModule, YesNoPipe],
 })
 export class InfoPage {
   config: ProviderOptions;
@@ -27,7 +28,7 @@ export class InfoPage {
 
   constructor(
     private authentication: AuthenticationService,
-    private platform: Platform
+    private platform: Platform,
   ) {}
 
   async ionViewWillEnter() {
