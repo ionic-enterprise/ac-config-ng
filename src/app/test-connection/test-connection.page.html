@@ -19,7 +19,6 @@
           {{loggedIn ? "Logged In" : "Logged Out"}}
         </span>
       </ion-label>
-      <div class="error-message">{{ errorMessage }}</div>
       <div class="actions">
         <ion-button
           fill="outline"
@@ -37,4 +36,31 @@
       </div>
     </ion-card-content>
   </ion-card>
+
+  <ion-toast
+    [isOpen]="displayAuthFailure"
+    message="Authentication failed!!"
+    color="danger"
+    [duration]="3000"
+    position="middle"
+    (didDismiss)="displayAuthFailure = false"
+  ></ion-toast>
+
+  <ion-toast
+    [isOpen]="displayRefreshFailure"
+    message="The refresh failed!!"
+    color="danger"
+    [duration]="3000"
+    position="middle"
+    (didDismiss)="displayRefreshFailure = false"
+  ></ion-toast>
+
+  <ion-toast
+    [isOpen]="displayRefreshSuccess"
+    message="The refresh was successful!!"
+    color="success"
+    [duration]="3000"
+    position="middle"
+    (didDismiss)="displayRefreshSuccess = false"
+  ></ion-toast>
 </ion-content>

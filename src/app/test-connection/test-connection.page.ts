@@ -13,8 +13,10 @@ import { IonicModule } from '@ionic/angular';
 })
 export class TestConnectionPage {
   loggedIn: boolean;
-  errorMessage: string;
   canRefresh: boolean;
+  displayRefreshSuccess: boolean = false;
+  displayRefreshFailure: boolean = false;
+  displayAuthFailure: boolean = false;
 
   constructor(private authentication: AuthenticationService) {}
 
@@ -26,23 +28,21 @@ export class TestConnectionPage {
     try {
       await this.performAuthAction();
     } catch (err: any) {
-      this.errorMessage = err;
+      this.displayAuthFailure = true;
     }
   }
 
   async refresh(): Promise<void> {
-    this.errorMessage = '';
     try {
       await this.authentication.refresh();
-      alert('Refresh Successful!!');
+      this.displayRefreshSuccess = true;
       this.checkLoginStatus();
     } catch (err: any) {
-      this.errorMessage = err;
+      this.displayRefreshFailure = err;
     }
   }
 
   private async performAuthAction(): Promise<void> {
-    this.errorMessage = '';
     if (this.loggedIn) {
       await this.authentication.logout();
     } else {
