@@ -23,11 +23,11 @@ export const awsConfig: ProviderOptions = {
 };
 
 export const azureConfig: ProviderOptions = {
-  clientId: 'ed8cb65d-7bb2-4107-bc36-557fb680b994',
+  clientId: '3f32ad7a-0ae6-458a-8d94-763d98ef48d4',
   scope:
-    'openid offline_access email profile https://dtjacdemo.onmicrosoft.com/ed8cb65d-7bb2-4107-bc36-557fb680b994/demo.read',
+    'openid email profile 3f32ad7a-0ae6-458a-8d94-763d98ef48d4/.default  https://gamseg.onmicrosoft.com/3f32ad7a-0ae6-458a-8d94-763d98ef48d4/User.Read ',
   discoveryUrl:
-    'https://dtjacdemo.b2clogin.com/dtjacdemo.onmicrosoft.com/v2.0/.well-known/openid-configuration?p=B2C_1_acdemo2',
+    'https://gamseg.b2clogin.com/gamseg.onmicrosoft.com/v2.0/.well-known/openid-configuration?p=B2C_1_ionicDemo',
   redirectUri: 'msauth://com.ionic.acprovider/O5m5Gtd2Xt8UNkW3wk7DWyKGfv8%3D',
   logoutUrl: 'msauth://com.ionic.acprovider/O5m5Gtd2Xt8UNkW3wk7DWyKGfv8%3D',
   audience: '',
