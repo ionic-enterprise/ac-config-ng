@@ -25,7 +25,7 @@ export const awsConfig: ProviderOptions = {
 export const azureConfig: ProviderOptions = {
   clientId: '3f32ad7a-0ae6-458a-8d94-763d98ef48d4',
   scope:
-    'openid email profile 3f32ad7a-0ae6-458a-8d94-763d98ef48d4/.default  https://gamseg.onmicrosoft.com/3f32ad7a-0ae6-458a-8d94-763d98ef48d4/User.Read ',
+    'openid email profile  https://gamseg.onmicrosoft.com/3f32ad7a-0ae6-458a-8d94-763d98ef48d4/User.Read ',
   discoveryUrl:
     'https://gamseg.b2clogin.com/gamseg.onmicrosoft.com/v2.0/.well-known/openid-configuration?p=B2C_1_ionicDemo',
   redirectUri: 'msauth://com.ionic.acprovider/O5m5Gtd2Xt8UNkW3wk7DWyKGfv8%3D',
