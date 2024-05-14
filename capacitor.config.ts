@@ -3,7 +3,7 @@ import { CapacitorConfig } from '@capacitor/cli';
 const config: CapacitorConfig = {
   appId: 'io.ionic.acconfigng',
   appName: 'AC Config Tool',
-  webDir: 'www',
+  webDir: 'www/browser',
   bundledWebRuntime: false,
   plugins: {
     SplashScreen: {

@@ -5,13 +5,12 @@ vars:
 platforms:
   android:
     gradle:
-      - file: app/build.gradle
+      - file: variables.gradle
         target:
-          android:
-            defaultConfig:
-        insertType: "variable"
+          ext:
+        insertType: 'variable'
         insert:
-          - manifestPlaceholders: "['AUTH_URL_SCHEME': '$AUTH_URL_SCHEME']"
+          - AUTH_URL_SCHEME: "'$AUTH_URL_SCHEME'"
   ios:
     targets:
       App:
