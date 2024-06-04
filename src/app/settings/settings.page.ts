@@ -12,7 +12,21 @@ import {
   webConfig,
 } from '@env/environment';
 import { ProviderOptions } from '@ionic-enterprise/auth';
-import { IonicModule, Platform } from '@ionic/angular';
+import { Platform } from '@ionic/angular';
+import {
+  IonButton,
+  IonContent,
+  IonHeader,
+  IonInput,
+  IonItem,
+  IonLabel,
+  IonList,
+  IonListHeader,
+  IonSelect,
+  IonSelectOption,
+  IonTitle,
+  IonToolbar,
+} from '@ionic/angular/standalone';
 import { config } from '../../config';
 
 @Component({
@@ -20,7 +34,22 @@ import { config } from '../../config';
   templateUrl: 'settings.page.html',
   styleUrls: ['settings.page.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule],
+  imports: [
+    IonLabel,
+    IonListHeader,
+    IonList,
+    IonButton,
+    IonHeader,
+    IonInput,
+    IonToolbar,
+    IonTitle,
+    IonContent,
+    IonItem,
+    IonSelect,
+    IonSelectOption,
+    CommonModule,
+    FormsModule,
+  ],
 })
 export class SettingsPage {
   disableEdits: boolean;
@@ -37,7 +66,7 @@ export class SettingsPage {
 
   constructor(
     private authentication: AuthenticationService,
-    private platform: Platform
+    private platform: Platform,
   ) {}
 
   async ionViewDidEnter() {
@@ -58,7 +87,7 @@ export class SettingsPage {
       config,
       this.platform.is('hybrid')
         ? undefined
-        : flows.find((f) => f.key === 'implicit')
+        : flows.find((f) => f.key === 'implicit'),
     );
     return this.initCustomizableFields();
   }
@@ -73,7 +102,7 @@ export class SettingsPage {
       config,
       this.platform.is('hybrid')
         ? undefined
-        : flows.find((f) => f.key === 'PKCE')
+        : flows.find((f) => f.key === 'PKCE'),
     );
     return this.initCustomizableFields();
   }
@@ -88,7 +117,7 @@ export class SettingsPage {
       config,
       this.platform.is('hybrid')
         ? undefined
-        : flows.find((f) => f.key === 'implicit')
+        : flows.find((f) => f.key === 'implicit'),
     );
     return this.initCustomizableFields();
   }
@@ -103,7 +132,7 @@ export class SettingsPage {
       config,
       this.platform.is('hybrid')
         ? undefined
-        : flows.find((f) => f.key === 'PKCE')
+        : flows.find((f) => f.key === 'PKCE'),
     );
     return this.initCustomizableFields();
   }

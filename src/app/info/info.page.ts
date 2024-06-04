@@ -5,14 +5,28 @@ import { AuthenticationService } from '@app/core';
 import { Flow, Provider } from '@app/data';
 import { YesNoPipe } from '@app/shared/yes-no.pipe';
 import { ProviderOptions } from '@ionic-enterprise/auth';
-import { IonicModule, Platform } from '@ionic/angular';
+import { Platform } from '@ionic/angular';
+import {
+  IonContent,
+  IonHeader,
+  IonTitle,
+  IonToolbar,
+} from '@ionic/angular/standalone';
 
 @Component({
   selector: 'app-info',
   templateUrl: 'info.page.html',
   styleUrls: ['info.page.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule, YesNoPipe],
+  imports: [
+    IonToolbar,
+    IonTitle,
+    IonContent,
+    IonHeader,
+    CommonModule,
+    FormsModule,
+    YesNoPipe,
+  ],
 })
 export class InfoPage {
   config: ProviderOptions;

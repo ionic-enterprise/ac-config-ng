@@ -2,14 +2,42 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AuthenticationService } from '@app/core';
-import { IonicModule } from '@ionic/angular';
+import {
+  IonButton,
+  IonCard,
+  IonCardContent,
+  IonCardHeader,
+  IonCardSubtitle,
+  IonCardTitle,
+  IonContent,
+  IonHeader,
+  IonLabel,
+  IonTitle,
+  IonToast,
+  IonToolbar,
+} from '@ionic/angular/standalone';
 
 @Component({
   selector: 'app-test-connection',
   templateUrl: 'test-connection.page.html',
   styleUrls: ['test-connection.page.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, FormsModule],
+  imports: [
+    IonToast,
+    IonButton,
+    IonCardContent,
+    IonLabel,
+    IonCardSubtitle,
+    IonCardTitle,
+    IonCardHeader,
+    IonCard,
+    IonTitle,
+    IonToolbar,
+    IonHeader,
+    IonContent,
+    CommonModule,
+    FormsModule,
+  ],
 })
 export class TestConnectionPage {
   loggedIn: boolean;
