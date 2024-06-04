@@ -44,21 +44,21 @@ describe('TestConnectionPage', () => {
 
     it('shows a status of logged in', async () => {
       const label = fixture.debugElement.query(
-        By.css('[data-testid="auth-status-label"]')
+        By.css('[data-testid="auth-status-label"]'),
       );
       expect(label.nativeElement.textContent.trim()).toEqual('Logged In');
     });
 
     it('shows a auth button of Log Out', async () => {
       const button = fixture.debugElement.query(
-        By.css('[data-testid="auth-button"]')
+        By.css('[data-testid="auth-button"]'),
       );
       expect(button.nativeElement.textContent.trim()).toEqual('Log Out');
     });
 
     it('enables the refresh', async () => {
       const button = fixture.debugElement.query(
-        By.css('[data-testid="refresh-button"]')
+        By.css('[data-testid="refresh-button"]'),
       );
       expect(button.nativeElement.disabled).toBe(false);
     });
@@ -69,7 +69,7 @@ describe('TestConnectionPage', () => {
       await component.ionViewDidEnter();
       fixture.detectChanges();
       const button = fixture.debugElement.query(
-        By.css('[data-testid="refresh-button"]')
+        By.css('[data-testid="refresh-button"]'),
       );
       expect(button.nativeElement.disabled).toBe(true);
     });
@@ -77,7 +77,7 @@ describe('TestConnectionPage', () => {
     it('calls refresh when refresh clicked', () => {
       const auth = TestBed.inject(AuthenticationService);
       const button = fixture.debugElement.query(
-        By.css('[data-testid="refresh-button"]')
+        By.css('[data-testid="refresh-button"]'),
       );
       click(fixture, button.nativeElement);
       expect(auth.refresh).toHaveBeenCalledTimes(1);
@@ -87,7 +87,7 @@ describe('TestConnectionPage', () => {
       it('performs a logout', () => {
         const auth = TestBed.inject(AuthenticationService);
         const button = fixture.debugElement.query(
-          By.css('[data-testid="auth-button"]')
+          By.css('[data-testid="auth-button"]'),
         );
         click(fixture, button.nativeElement);
         expect(auth.logout).toHaveBeenCalledTimes(1);
@@ -96,7 +96,7 @@ describe('TestConnectionPage', () => {
       it('requeries is authenticated', fakeAsync(() => {
         const auth = TestBed.inject(AuthenticationService);
         const button = fixture.debugElement.query(
-          By.css('[data-testid="auth-button"]')
+          By.css('[data-testid="auth-button"]'),
         );
         click(fixture, button.nativeElement);
         tick();
@@ -116,21 +116,21 @@ describe('TestConnectionPage', () => {
 
     it('shows a status of logged out', () => {
       const label = fixture.debugElement.query(
-        By.css('[data-testid="auth-status-label"]')
+        By.css('[data-testid="auth-status-label"]'),
       );
       expect(label.nativeElement.textContent.trim()).toEqual('Logged Out');
     });
 
     it('shows a auth button of Log In', () => {
       const button = fixture.debugElement.query(
-        By.css('[data-testid="auth-button"]')
+        By.css('[data-testid="auth-button"]'),
       );
       expect(button.nativeElement.textContent.trim()).toEqual('Log In');
     });
 
     it('disables the refresh', () => {
       const button = fixture.debugElement.query(
-        By.css('[data-testid="refresh-button"]')
+        By.css('[data-testid="refresh-button"]'),
       );
       expect(button.nativeElement.disabled).toBe(true);
     });
@@ -139,7 +139,7 @@ describe('TestConnectionPage', () => {
       it('performs a login', () => {
         const auth = TestBed.inject(AuthenticationService);
         const button = fixture.debugElement.query(
-          By.css('[data-testid="auth-button"]')
+          By.css('[data-testid="auth-button"]'),
         );
         click(fixture, button.nativeElement);
         expect(auth.login).toHaveBeenCalledTimes(1);
@@ -148,7 +148,7 @@ describe('TestConnectionPage', () => {
       it('requeries is authenticated', fakeAsync(() => {
         const auth = TestBed.inject(AuthenticationService);
         const button = fixture.debugElement.query(
-          By.css('[data-testid="auth-button"]')
+          By.css('[data-testid="auth-button"]'),
         );
         click(fixture, button.nativeElement);
         tick();
