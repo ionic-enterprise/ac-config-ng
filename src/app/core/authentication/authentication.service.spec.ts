@@ -173,16 +173,19 @@ describe('AuthenticationService', () => {
 
     it('resolves false when it is not expired', async () => {
       spyOn(AuthConnect, 'isAccessTokenExpired').and.resolveTo(false);
+      await service.initialize();
       expect(await service.accessTokenIsExpired()).toBeFalse();
     });
 
     it('resolves true when it is expired', async () => {
       spyOn(AuthConnect, 'isAccessTokenExpired').and.resolveTo(true);
+      await service.initialize();
       expect(await service.accessTokenIsExpired()).toBeTrue();
     });
 
     it('resolves false if there is no auth result', async () => {
       spy.withArgs({ key: 'auth-result' }).and.resolveTo({ value: null });
+      await service.initialize();
       expect(await service.accessTokenIsExpired()).toBeFalse();
     });
   });
@@ -211,16 +214,19 @@ describe('AuthenticationService', () => {
 
     it('resolves false when there is no refresh token', async () => {
       spyOn(AuthConnect, 'isRefreshTokenAvailable').and.resolveTo(false);
+      await service.initialize();
       expect(await service.canRefresh()).toBeFalse();
     });
 
     it('resolves true when a refresh token is available', async () => {
       spyOn(AuthConnect, 'isRefreshTokenAvailable').and.resolveTo(true);
+      await service.initialize();
       expect(await service.canRefresh()).toBeTrue();
     });
 
     it('resolves false if there is no auth result', async () => {
       spy.withArgs({ key: 'auth-result' }).and.resolveTo({ value: null });
+      await service.initialize();
       expect(await service.canRefresh()).toBeFalse();
     });
   });
@@ -248,11 +254,13 @@ describe('AuthenticationService', () => {
     });
 
     it('resolves the access token', async () => {
+      await service.initialize();
       expect(await service.getAccessToken()).toEqual('the-access-token');
     });
 
     it('resolves undefined if there is no auth result', async () => {
       spy.withArgs({ key: 'auth-result' }).and.resolveTo({ value: null });
+      await service.initialize();
       expect(await service.getAccessToken()).toBeUndefined();
     });
   });
@@ -336,7 +344,7 @@ describe('AuthenticationService', () => {
           accessToken: 'the-access-token',
           refreshToken: 'the-refresh-token',
           idToken: 'the-id-token',
-        } as any)
+        } as any),
       );
     });
 
@@ -346,6 +354,7 @@ describe('AuthenticationService', () => {
       });
 
       it('gets the config', async () => {
+        await service.initialize();
         await service.login();
         expect(Preferences.get).toHaveBeenCalledTimes(2);
         expect(Preferences.get).toHaveBeenCalledWith({
@@ -357,6 +366,7 @@ describe('AuthenticationService', () => {
       });
 
       it('runs the init once', async () => {
+        await service.initialize();
         await service.login();
         await service.login();
         expect(Preferences.get).toHaveBeenCalledTimes(2);
@@ -364,6 +374,7 @@ describe('AuthenticationService', () => {
 
       it('creates with Cognito', async () => {
         spyOn(Preferences, 'set');
+        await service.initialize();
         await service.login();
         expect(Preferences.set).toHaveBeenCalledWith({
           key: 'auth-provider',
@@ -376,16 +387,18 @@ describe('AuthenticationService', () => {
       });
 
       it('performs the login', async () => {
+        await service.initialize();
         await service.login();
         expect(AuthConnect.login).toHaveBeenCalledTimes(1);
         expect(AuthConnect.login).toHaveBeenCalledWith(
           jasmine.any(CognitoProvider),
-          awsConfig
+          awsConfig,
         );
       });
 
       it('save the auth result', async () => {
         spyOn(Preferences, 'set');
+        await service.initialize();
         await service.login();
         expect(Preferences.set).toHaveBeenCalledTimes(3);
         expect(Preferences.set).toHaveBeenCalledWith({
@@ -408,6 +421,7 @@ describe('AuthenticationService', () => {
 
         it('creates with Cognito', async () => {
           spyOn(Preferences, 'set');
+          await service.initialize();
           await service.login();
           expect(Preferences.set).toHaveBeenCalledWith({
             key: 'auth-provider',
@@ -428,16 +442,18 @@ describe('AuthenticationService', () => {
         });
 
         it('performs the login', async () => {
+          await service.initialize();
           await service.login();
           expect(AuthConnect.login).toHaveBeenCalledTimes(1);
           expect(AuthConnect.login).toHaveBeenCalledWith(
             jasmine.any(CognitoProvider),
-            { ...awsConfig, ...webConfig }
+            { ...awsConfig, ...webConfig },
           );
         });
 
         it('save the auth result', async () => {
           spyOn(Preferences, 'set');
+          await service.initialize();
           await service.login();
           expect(Preferences.set).toHaveBeenCalledTimes(4);
           expect(Preferences.set).toHaveBeenCalledWith({
@@ -469,6 +485,7 @@ describe('AuthenticationService', () => {
       });
 
       it('gets all of the things', async () => {
+        await service.initialize();
         await service.login();
         expect(Preferences.get).toHaveBeenCalledTimes(4);
         expect(Preferences.get).toHaveBeenCalledWith({
@@ -486,6 +503,7 @@ describe('AuthenticationService', () => {
       });
 
       it('performs the login', async () => {
+        await service.initialize();
         await service.login();
         expect(AuthConnect.login).toHaveBeenCalledTimes(1);
       });
@@ -498,6 +516,7 @@ describe('AuthenticationService', () => {
             idToken: 'the-id-token',
           }),
         });
+        await service.initialize();
         await service.login();
         expect(AuthConnect.login).not.toHaveBeenCalled();
       });
@@ -528,6 +547,7 @@ describe('AuthenticationService', () => {
 
     it('performs the logout', async () => {
       spyOn(AuthConnect, 'logout');
+      await service.initialize();
       await service.logout();
       expect(AuthConnect.logout).toHaveBeenCalledTimes(1);
       expect(AuthConnect.logout).toHaveBeenCalledWith(
@@ -536,13 +556,14 @@ describe('AuthenticationService', () => {
           accessToken: 'the-access-token',
           refreshToken: 'the-refresh-token',
           idToken: 'the-id-token',
-        } as any
+        } as any,
       );
     });
 
     it('removes the auth result', async () => {
       spyOn(AuthConnect, 'logout');
       spyOn(Preferences, 'remove');
+      await service.initialize();
       await service.logout();
       expect(Preferences.remove).toHaveBeenCalledTimes(1);
       expect(Preferences.remove).toHaveBeenCalledWith({ key: 'auth-result' });
@@ -551,6 +572,7 @@ describe('AuthenticationService', () => {
     it('does not perform the logout if there is no auth result', async () => {
       spy.withArgs({ key: 'auth-result' }).and.resolveTo({ value: null });
       spyOn(AuthConnect, 'logout');
+      await service.initialize();
       await service.logout();
       expect(AuthConnect.logout).not.toHaveBeenCalled();
     });
@@ -584,6 +606,7 @@ describe('AuthenticationService', () => {
         refreshToken: 'new-refresh-token',
         idToken: 'new-id-token',
       } as any);
+      await service.initialize();
       await service.refresh();
       expect(AuthConnect.refreshSession).toHaveBeenCalledTimes(1);
       expect(AuthConnect.refreshSession).toHaveBeenCalledWith(
@@ -592,7 +615,7 @@ describe('AuthenticationService', () => {
           accessToken: 'the-access-token',
           refreshToken: 'the-refresh-token',
           idToken: 'the-id-token',
-        } as any
+        } as any,
       );
     });
 
@@ -603,6 +626,7 @@ describe('AuthenticationService', () => {
         refreshToken: 'new-refresh-token',
         idToken: 'new-id-token',
       } as any);
+      await service.initialize();
       await service.refresh();
       expect(Preferences.set).toHaveBeenCalledTimes(1);
       expect(Preferences.set).toHaveBeenCalledWith({
@@ -622,6 +646,7 @@ describe('AuthenticationService', () => {
         refreshToken: 'new-refresh-token',
         idToken: 'new-id-token',
       } as any);
+      await service.initialize();
       await service.refresh();
       await service.logout();
       expect(AuthConnect.logout).toHaveBeenCalledWith(
@@ -630,13 +655,14 @@ describe('AuthenticationService', () => {
           accessToken: 'new-access-token',
           refreshToken: 'new-refresh-token',
           idToken: 'new-id-token',
-        } as any
+        } as any,
       );
     });
 
     it('does not refresh the session if there is no auth result', async () => {
       spy.withArgs({ key: 'auth-result' }).and.resolveTo({ value: null });
       spyOn(AuthConnect, 'refreshSession');
+      await service.initialize();
       await service.refresh();
       expect(AuthConnect.refreshSession).not.toHaveBeenCalled();
     });
@@ -666,16 +692,19 @@ describe('AuthenticationService', () => {
 
     it('is true when there is an auth-result and an access token is available', async () => {
       spyOn(AuthConnect, 'isAccessTokenAvailable').and.resolveTo(true);
+      await service.initialize();
       expect(await service.isAuthenticated()).toBeTrue();
     });
 
     it('is false when there is an auth-result and an access token is not available', async () => {
       spyOn(AuthConnect, 'isAccessTokenAvailable').and.resolveTo(false);
+      await service.initialize();
       expect(await service.isAuthenticated()).toBeFalse();
     });
 
     it('is false if there is no auth result', async () => {
       spy.withArgs({ key: 'auth-result' }).and.resolveTo({ value: null });
+      await service.initialize();
       expect(await service.isAuthenticated()).toBeFalse();
     });
   });

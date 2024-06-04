@@ -28,7 +28,6 @@ export class AuthenticationService {
   private currentFlow: Flow | undefined;
   private currentProvider: Provider | undefined;
 
-  private initializing: Promise<void>;
   private authResult: AuthResult;
 
   private provider:
@@ -69,7 +68,7 @@ export class AuthenticationService {
   async setConfig(
     provider: Provider,
     options: ProviderOptions,
-    flow?: Flow
+    flow?: Flow,
   ): Promise<void> {
     await Promise.all([
       Preferences.set({
@@ -95,11 +94,10 @@ export class AuthenticationService {
   }
 
   async login(): Promise<void> {
-    await this.initialize();
     if (!this.authResult) {
       this.authResult = await AuthConnect.login(
         this.provider,
-        this.currentOptions
+        this.currentOptions,
       );
       await Preferences.set({
         key: this.authResultKey,
@@ -109,7 +107,6 @@ export class AuthenticationService {
   }
 
   async logout(): Promise<void> {
-    await this.initialize();
     if (this.authResult) {
       await AuthConnect.logout(this.provider, this.authResult);
       this.authResult = undefined;
@@ -118,11 +115,10 @@ export class AuthenticationService {
   }
 
   async refresh(): Promise<void> {
-    await this.initialize();
     if (this.authResult) {
       this.authResult = await AuthConnect.refreshSession(
         this.provider,
-        this.authResult
+        this.authResult,
       );
       await Preferences.set({
         key: this.authResultKey,
@@ -132,7 +128,6 @@ export class AuthenticationService {
   }
 
   async canRefresh(): Promise<boolean> {
-    await this.initialize();
     return (
       !!this.authResult &&
       (await AuthConnect.isRefreshTokenAvailable(this.authResult))
@@ -140,7 +135,6 @@ export class AuthenticationService {
   }
 
   async accessTokenIsExpired(): Promise<boolean> {
-    await this.initialize();
     return (
       !!this.authResult &&
       (await AuthConnect.isAccessTokenExpired(this.authResult))
@@ -148,33 +142,25 @@ export class AuthenticationService {
   }
 
   async getAccessToken(): Promise<string | undefined> {
-    await this.initialize();
     return this.authResult?.accessToken;
   }
 
   async isAuthenticated(): Promise<boolean> {
-    await this.initialize();
     return (
       !!this.authResult &&
       (await AuthConnect.isAccessTokenAvailable(this.authResult))
     );
   }
 
-  private async initialize(): Promise<void> {
-    if (!this.initializing) {
-      this.initializing = new Promise(async (resolve) => {
-        const opt = await this.getConfig();
-        if (opt) {
-          await this.createProvider();
-          await this.setupAuthConnect();
-          await this.initializeAuthResult();
-        } else {
-          await this.setDefaultConfig();
-        }
-        resolve();
-      });
+  async initialize(): Promise<void> {
+    const opt = await this.getConfig();
+    if (opt) {
+      await this.createProvider();
+      await this.setupAuthConnect();
+      await this.initializeAuthResult();
+    } else {
+      await this.setDefaultConfig();
     }
-    return this.initializing;
   }
 
   private async setDefaultConfig(): Promise<void> {
@@ -191,7 +177,7 @@ export class AuthenticationService {
       {
         ...awsConfig,
         ...mobileConfig,
-      }
+      },
     );
   }
 
@@ -202,7 +188,7 @@ export class AuthenticationService {
         ...awsConfig,
         ...webConfig,
       },
-      flows.find((f) => f.key === 'PKCE')
+      flows.find((f) => f.key === 'PKCE'),
     );
   }
 
