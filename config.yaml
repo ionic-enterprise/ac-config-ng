@@ -8,9 +8,9 @@ platforms:
       - file: variables.gradle
         target:
           ext:
-        insertType: 'variable'
-        insert:
-          - AUTH_URL_SCHEME: "'$AUTH_URL_SCHEME'"
+            AUTH_URL_SCHEME:
+        replace:
+          AUTH_URL_SCHEME: "'$AUTH_URL_SCHEME'"
   ios:
     targets:
       App:

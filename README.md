@@ -22,29 +22,12 @@ Once the access is set up, the build processes is the same as for most Ionic app
 
 The `npm run build` command potentially modifies the following files:
 
-```
-android/app/build.gradle
+```shell
+android/variables.gradle
 android/app/src/main/AndroidManifest.xml
 ios/App/App/Info.plist
 src/config.ts
 ```
-
-Do not commit changes to the `android/app/build.gradle` file. The `trapeze` tool adds the following code to it:
-
-```diff
---- a/android/app/build.gradle
-+++ b/android/app/build.gradle
-@@ -15,6 +15,7 @@ android {
-              // Default: https://android.googlesource.com/platform/frameworks/base/+/282e181b58cf72b6ca770dc7ca5f91f135444502/tools/aapt/AaptAssets.cpp#61
-             ignoreAssetsPattern '!.svn:!.git:!.ds_store:!*.scc:.*:!CVS:!thumbs.db:!picasa.ini:!*~'
-         }
-+        manifestPlaceholders = ['AUTH_URL_SCHEME': 'msauth']
-     }
-     buildTypes {
-         release {
-```
-
-This is currently performed as an add and not an update due to [limitations in the tooling](https://github.com/ionic-team/trapeze/issues/157).
 
 Changes to the native files can be reverted to the committed content via `npm run clean`.
 
