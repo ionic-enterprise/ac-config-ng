@@ -55,7 +55,9 @@ export class TestConnectionPage {
   async handleAuth(): Promise<void> {
     try {
       await this.performAuthAction();
+      console.log('auth appeared to "work"');
     } catch (err: any) {
+      console.error(err);
       this.displayAuthFailure = true;
     }
   }
