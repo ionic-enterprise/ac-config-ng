@@ -18,7 +18,6 @@ import {
   selector: 'app-tabs',
   templateUrl: 'tabs.page.html',
   styleUrls: ['tabs.page.scss'],
-  standalone: true,
   imports: [IonLabel, IonIcon, IonTabBar, IonTabButton, IonTabs, CommonModule],
 })
 export class TabsPage {

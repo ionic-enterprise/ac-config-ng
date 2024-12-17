@@ -7,7 +7,6 @@ import { IonContent } from '@ionic/angular/standalone';
   selector: 'app-login',
   templateUrl: './login.page.html',
   styleUrls: ['./login.page.scss'],
-  standalone: true,
   imports: [IonContent, CommonModule, FormsModule],
 })
 export class LoginPage {}

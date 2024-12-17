@@ -17,7 +17,6 @@ import {
   selector: 'app-info',
   templateUrl: 'info.page.html',
   styleUrls: ['info.page.scss'],
-  standalone: true,
   imports: [
     IonToolbar,
     IonTitle,

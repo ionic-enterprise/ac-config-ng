@@ -65,17 +65,17 @@ describe('SettingsPage', () => {
 
     it('displays a message to logout first', () => {
       const label = fixture.debugElement.query(
-        By.css('[data-testid="logout-message"]')
+        By.css('[data-testid="logout-message"]'),
       );
       expect(label).toBeTruthy();
       expect(label.nativeElement.textContent.trim()).toBe(
-        'Please log out first'
+        'Please log out first',
       );
     });
 
     it('does not allow swaps', () => {
       let button = fixture.debugElement.query(
-        By.css('[data-testid="use-azure"]')
+        By.css('[data-testid="use-azure"]'),
       );
       expect(button.nativeElement.disabled).toBe(true);
       button = fixture.debugElement.query(By.css('[data-testid="use-aws"]'));
@@ -85,7 +85,7 @@ describe('SettingsPage', () => {
       button = fixture.debugElement.query(By.css('[data-testid="use-okta"]'));
       expect(button.nativeElement.disabled).toBe(true);
       button = fixture.debugElement.query(
-        By.css('[data-testid="use-customization"]')
+        By.css('[data-testid="use-customization"]'),
       );
       expect(button.nativeElement.disabled).toBe(true);
     });
@@ -94,7 +94,7 @@ describe('SettingsPage', () => {
       let input: DebugElement;
       beforeEach(() => {
         input = fixture.debugElement.query(
-          By.css('[data-testid="client-id-input"]')
+          By.css('[data-testid="client-id-input"]'),
         );
       });
 
@@ -112,7 +112,7 @@ describe('SettingsPage', () => {
       let input: DebugElement;
       beforeEach(() => {
         input = fixture.debugElement.query(
-          By.css('[data-testid="discovery-url-input"]')
+          By.css('[data-testid="discovery-url-input"]'),
         );
       });
 
@@ -130,7 +130,7 @@ describe('SettingsPage', () => {
       let input: DebugElement;
       beforeEach(() => {
         input = fixture.debugElement.query(
-          By.css('[data-testid="scope-input"]')
+          By.css('[data-testid="scope-input"]'),
         );
       });
 
@@ -148,7 +148,7 @@ describe('SettingsPage', () => {
       let input: DebugElement;
       beforeEach(() => {
         input = fixture.debugElement.query(
-          By.css('[data-testid="audience-input"]')
+          By.css('[data-testid="audience-input"]'),
         );
       });
 
@@ -173,14 +173,14 @@ describe('SettingsPage', () => {
 
     it('does not display a message to logout first', () => {
       const label = fixture.debugElement.query(
-        By.css('[data-testid="logout-message"]')
+        By.css('[data-testid="logout-message"]'),
       );
       expect(label).toBeFalsy();
     });
 
     it('allows swaps', () => {
       let button = fixture.debugElement.query(
-        By.css('[data-testid="use-azure"]')
+        By.css('[data-testid="use-azure"]'),
       );
       expect(button.nativeElement.disabled).toBe(false);
       button = fixture.debugElement.query(By.css('[data-testid="use-aws"]'));
@@ -190,7 +190,7 @@ describe('SettingsPage', () => {
       button = fixture.debugElement.query(By.css('[data-testid="use-okta"]'));
       expect(button.nativeElement.disabled).toBe(false);
       button = fixture.debugElement.query(
-        By.css('[data-testid="use-customization"]')
+        By.css('[data-testid="use-customization"]'),
       );
       expect(button.nativeElement.disabled).toBe(false);
     });
@@ -204,13 +204,13 @@ describe('SettingsPage', () => {
 
       it('disabled the big four templates', () => {
         let button = fixture.debugElement.query(
-          By.css('[data-testid="use-azure"]')
+          By.css('[data-testid="use-azure"]'),
         );
         expect(button.nativeElement.disabled).toBe(true);
         button = fixture.debugElement.query(By.css('[data-testid="use-aws"]'));
         expect(button.nativeElement.disabled).toBe(true);
         button = fixture.debugElement.query(
-          By.css('[data-testid="use-auth0"]')
+          By.css('[data-testid="use-auth0"]'),
         );
         expect(button.nativeElement.disabled).toBe(true);
         button = fixture.debugElement.query(By.css('[data-testid="use-okta"]'));
@@ -219,17 +219,17 @@ describe('SettingsPage', () => {
 
       it('allows customization', () => {
         const button = fixture.debugElement.query(
-          By.css('[data-testid="use-customization"]')
+          By.css('[data-testid="use-customization"]'),
         );
         expect(button.nativeElement.disabled).toBe(false);
       });
     });
 
     describe('azure button', () => {
-      let button: any;
+      let button: DebugElement;
       beforeEach(() => {
         button = fixture.debugElement.query(
-          By.css('[data-testid="use-azure"]')
+          By.css('[data-testid="use-azure"]'),
         );
       });
 
@@ -248,7 +248,7 @@ describe('SettingsPage', () => {
           expect(authentication.setConfig).toHaveBeenCalledWith(
             providers.find((p) => p.key === 'azure'),
             { ...azureConfig, ...webConfig },
-            flows.find((f) => f.key === 'implicit')
+            flows.find((f) => f.key === 'implicit'),
           );
         }));
       });
@@ -266,14 +266,14 @@ describe('SettingsPage', () => {
           expect(authentication.setConfig).toHaveBeenCalledWith(
             providers.find((p) => p.key === 'azure'),
             azureConfig,
-            undefined
+            undefined,
           );
         }));
       });
     });
 
     describe('aws button', () => {
-      let button: any;
+      let button: DebugElement;
       beforeEach(() => {
         button = fixture.debugElement.query(By.css('[data-testid="use-aws"]'));
       });
@@ -293,7 +293,7 @@ describe('SettingsPage', () => {
           expect(authentication.setConfig).toHaveBeenCalledWith(
             providers.find((p) => p.key === 'cognito'),
             { ...awsConfig, ...webConfig },
-            flows.find((f) => f.key === 'PKCE')
+            flows.find((f) => f.key === 'PKCE'),
           );
         }));
       });
@@ -311,17 +311,17 @@ describe('SettingsPage', () => {
           expect(authentication.setConfig).toHaveBeenCalledWith(
             providers.find((p) => p.key === 'cognito'),
             awsConfig,
-            undefined
+            undefined,
           );
         }));
       });
     });
 
     describe('auth0 button', () => {
-      let button: any;
+      let button: DebugElement;
       beforeEach(() => {
         button = fixture.debugElement.query(
-          By.css('[data-testid="use-auth0"]')
+          By.css('[data-testid="use-auth0"]'),
         );
       });
 
@@ -340,7 +340,7 @@ describe('SettingsPage', () => {
           expect(authentication.setConfig).toHaveBeenCalledWith(
             providers.find((p) => p.key === 'auth0'),
             { ...auth0Config, ...webConfig },
-            flows.find((f) => f.key === 'implicit')
+            flows.find((f) => f.key === 'implicit'),
           );
         }));
       });
@@ -358,14 +358,14 @@ describe('SettingsPage', () => {
           expect(authentication.setConfig).toHaveBeenCalledWith(
             providers.find((p) => p.key === 'auth0'),
             auth0Config,
-            undefined
+            undefined,
           );
         }));
       });
     });
 
     describe('okta button', () => {
-      let button: any;
+      let button: DebugElement;
       beforeEach(() => {
         button = fixture.debugElement.query(By.css('[data-testid="use-okta"]'));
       });
@@ -385,7 +385,7 @@ describe('SettingsPage', () => {
           expect(authentication.setConfig).toHaveBeenCalledWith(
             providers.find((p) => p.key === 'okta'),
             { ...oktaConfig, ...webConfig },
-            flows.find((f) => f.key === 'PKCE')
+            flows.find((f) => f.key === 'PKCE'),
           );
         }));
       });
@@ -403,17 +403,17 @@ describe('SettingsPage', () => {
           expect(authentication.setConfig).toHaveBeenCalledWith(
             providers.find((p) => p.key === 'okta'),
             oktaConfig,
-            undefined
+            undefined,
           );
         }));
       });
     });
 
     describe('customize button', () => {
-      let button: any;
+      let button: DebugElement;
       beforeEach(() => {
         button = fixture.debugElement.query(
-          By.css('[data-testid="use-customization"]')
+          By.css('[data-testid="use-customization"]'),
         );
       });
 
@@ -427,23 +427,23 @@ describe('SettingsPage', () => {
 
         it('saves the config', waitForAsync(() => {
           let input = fixture.debugElement.query(
-            By.css('[data-testid="client-id-input"]')
+            By.css('[data-testid="client-id-input"]'),
           );
           setInputValue(fixture, input.nativeElement, '1994-9940fks');
           input = fixture.debugElement.query(
-            By.css('[data-testid="discovery-url-input"]')
+            By.css('[data-testid="discovery-url-input"]'),
           );
           setInputValue(
             fixture,
             input.nativeElement,
-            'https://foo.bar.disco/.well-known/sticky-buns'
+            'https://foo.bar.disco/.well-known/sticky-buns',
           );
           input = fixture.debugElement.query(
-            By.css('[data-testid="scope-input"]')
+            By.css('[data-testid="scope-input"]'),
           );
           setInputValue(fixture, input.nativeElement, 'email offline');
           input = fixture.debugElement.query(
-            By.css('[data-testid="audience-input"]')
+            By.css('[data-testid="audience-input"]'),
           );
           setInputValue(fixture, input.nativeElement, 'people');
           component.flow = flows.find((f) => f.key === 'PKCE');
@@ -461,7 +461,7 @@ describe('SettingsPage', () => {
               scope: 'email offline',
               audience: 'people',
             },
-            flows.find((f) => f.key === 'PKCE')
+            flows.find((f) => f.key === 'PKCE'),
           );
         }));
       });
@@ -474,23 +474,23 @@ describe('SettingsPage', () => {
 
         it('saves the config', waitForAsync(() => {
           let input = fixture.debugElement.query(
-            By.css('[data-testid="client-id-input"]')
+            By.css('[data-testid="client-id-input"]'),
           );
           setInputValue(fixture, input.nativeElement, '1994-9940fks');
           input = fixture.debugElement.query(
-            By.css('[data-testid="discovery-url-input"]')
+            By.css('[data-testid="discovery-url-input"]'),
           );
           setInputValue(
             fixture,
             input.nativeElement,
-            'https://foo.bar.disco/.well-known/sticky-buns'
+            'https://foo.bar.disco/.well-known/sticky-buns',
           );
           input = fixture.debugElement.query(
-            By.css('[data-testid="scope-input"]')
+            By.css('[data-testid="scope-input"]'),
           );
           setInputValue(fixture, input.nativeElement, 'email offline');
           input = fixture.debugElement.query(
-            By.css('[data-testid="audience-input"]')
+            By.css('[data-testid="audience-input"]'),
           );
           setInputValue(fixture, input.nativeElement, 'people');
           component.flow = undefined;
@@ -508,7 +508,7 @@ describe('SettingsPage', () => {
               scope: 'email offline',
               audience: 'people',
             },
-            undefined
+            undefined,
           );
         }));
       });
@@ -518,7 +518,7 @@ describe('SettingsPage', () => {
       let input: DebugElement;
       beforeEach(() => {
         input = fixture.debugElement.query(
-          By.css('[data-testid="client-id-input"]')
+          By.css('[data-testid="client-id-input"]'),
         );
       });
 
@@ -536,7 +536,7 @@ describe('SettingsPage', () => {
       let input: DebugElement;
       beforeEach(() => {
         input = fixture.debugElement.query(
-          By.css('[data-testid="discovery-url-input"]')
+          By.css('[data-testid="discovery-url-input"]'),
         );
       });
 
@@ -554,7 +554,7 @@ describe('SettingsPage', () => {
       let input: DebugElement;
       beforeEach(() => {
         input = fixture.debugElement.query(
-          By.css('[data-testid="scope-input"]')
+          By.css('[data-testid="scope-input"]'),
         );
       });
 
@@ -572,7 +572,7 @@ describe('SettingsPage', () => {
       let input: DebugElement;
       beforeEach(() => {
         input = fixture.debugElement.query(
-          By.css('[data-testid="audience-input"]')
+          By.css('[data-testid="audience-input"]'),
         );
       });
 

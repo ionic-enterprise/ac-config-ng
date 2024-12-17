@@ -1,7 +1,7 @@
 import { KeyValue } from '@angular/common';
 
 export type Flow = KeyValue<'implicit' | 'PKCE', string>;
-export const flows: Array<Flow> = [
+export const flows: Flow[] = [
   { key: 'implicit', value: 'Implicit' },
   { key: 'PKCE', value: 'PKCE' },
 ];

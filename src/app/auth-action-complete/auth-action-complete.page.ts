@@ -7,7 +7,6 @@ import { IonContent, IonSpinner } from '@ionic/angular/standalone';
   selector: 'app-auth-action-complete',
   templateUrl: './auth-action-complete.page.html',
   styleUrls: ['./auth-action-complete.page.scss'],
-  standalone: true,
   imports: [IonSpinner, IonContent, CommonModule, FormsModule],
 })
 export class AuthActionCompletePage {}

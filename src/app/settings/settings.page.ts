@@ -33,7 +33,6 @@ import { config } from '../../config';
   selector: 'app-settings',
   templateUrl: 'settings.page.html',
   styleUrls: ['settings.page.scss'],
-  standalone: true,
   imports: [
     IonLabel,
     IonListHeader,

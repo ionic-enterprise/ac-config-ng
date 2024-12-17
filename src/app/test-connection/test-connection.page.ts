@@ -21,7 +21,6 @@ import {
   selector: 'app-test-connection',
   templateUrl: 'test-connection.page.html',
   styleUrls: ['test-connection.page.scss'],
-  standalone: true,
   imports: [
     IonToast,
     IonButton,
@@ -42,9 +41,9 @@ import {
 export class TestConnectionPage {
   loggedIn: boolean;
   canRefresh: boolean;
-  displayRefreshSuccess: boolean = false;
-  displayRefreshFailure: boolean = false;
-  displayAuthFailure: boolean = false;
+  displayRefreshSuccess = false;
+  displayRefreshFailure = false;
+  displayAuthFailure = false;
 
   constructor(private authentication: AuthenticationService) {}
 
@@ -56,7 +55,7 @@ export class TestConnectionPage {
     try {
       await this.performAuthAction();
       console.log('auth appeared to "work"');
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error(err);
       this.displayAuthFailure = true;
     }
@@ -67,8 +66,9 @@ export class TestConnectionPage {
       await this.authentication.refresh();
       this.displayRefreshSuccess = true;
       this.checkLoginStatus();
-    } catch (err: any) {
-      this.displayRefreshFailure = err;
+    } catch (err: unknown) {
+      console.error(err);
+      this.displayRefreshFailure = true;
     }
   }
 
