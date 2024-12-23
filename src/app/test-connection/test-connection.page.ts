@@ -55,8 +55,7 @@ export class TestConnectionPage {
     try {
       await this.performAuthAction();
       console.log('auth appeared to "work"');
-    } catch (err: unknown) {
-      console.error(err);
+    } catch {
       this.displayAuthFailure = true;
     }
   }
@@ -66,8 +65,7 @@ export class TestConnectionPage {
       await this.authentication.refresh();
       this.displayRefreshSuccess = true;
       this.checkLoginStatus();
-    } catch (err: unknown) {
-      console.error(err);
+    } catch {
       this.displayRefreshFailure = true;
     }
   }
