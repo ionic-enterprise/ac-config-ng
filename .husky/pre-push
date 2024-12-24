@@ -1,1 +1,5 @@
-# npm run lint
+branch=`git rev-parse --abbrev-ref HEAD`
+if [ "main" = "$branch" ]; then
+  pnpm lint
+  pnpm build
+fi;
