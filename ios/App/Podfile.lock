@@ -12,7 +12,7 @@ PODS:
     - Capacitor
   - CapacitorSplashScreen (6.0.3):
     - Capacitor
-  - CapacitorStatusBar (6.0.2):
+  - CapacitorStatusBar (6.0.2-nightly-20240905T150509.0):
     - Capacitor
   - IonicEnterpriseAuth (6.0.5):
     - Capacitor
@@ -56,7 +56,7 @@ SPEC CHECKSUMS:
   CapacitorKeyboard: 460c6f9ec5e52c84f2742d5ce2e67bbc7ab0ebb0
   CapacitorPreferences: 9f9935bce493977183511362131a93f7b260191a
   CapacitorSplashScreen: 68893659d77b5f82d753b3a70475082845e3039c
-  CapacitorStatusBar: 3b9ac7d0684770522c532d1158a1434512ab1477
+  CapacitorStatusBar: dbb58afdd0773ea723f62ac9a12ccd46e52f2ac7
   IonicEnterpriseAuth: 794a98d792f7dbb6af4427576b88bc773d0c3b77
 
 PODFILE CHECKSUM: 82ccae1be8b5b33ce6cc235ad349bd27f02e654d

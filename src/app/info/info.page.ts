@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { AuthenticationService } from '@app/core';
+import { AuthenticationService, StatusBarService } from '@app/core';
 import { Flow, Provider } from '@app/data';
 import { YesNoPipe } from '@app/shared/yes-no.pipe';
 import { ProviderOptions } from '@ionic-enterprise/auth';
@@ -42,9 +42,11 @@ export class InfoPage {
   constructor(
     private authentication: AuthenticationService,
     private platform: Platform,
+    private statusBar: StatusBarService,
   ) {}
 
   async ionViewWillEnter() {
+    await this.statusBar.changeBackgroundToColor();
     this.showFlow = !this.platform.is('hybrid');
     this.config = await this.authentication.getConfig();
     this.configStr = JSON.stringify(this.config, undefined, 2);

@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { AuthenticationService } from '@app/core';
+import { AuthenticationService, StatusBarService } from '@app/core';
 import { Flow, flows, Provider, providers } from '@app/data';
 import {
   auth0Config,
@@ -66,9 +66,11 @@ export class SettingsPage {
   constructor(
     private authentication: AuthenticationService,
     private platform: Platform,
+    private statusBar: StatusBarService,
   ) {}
 
   async ionViewDidEnter() {
+    await this.statusBar.changeBackgroundToWhite();
     this.showFlow = !this.platform.is('hybrid');
     this.disableEdits = await this.authentication.isAuthenticated();
     this.disableTemplates =

@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { AuthenticationService } from '@app/core';
+import { AuthenticationService, StatusBarService } from '@app/core';
 import {
   IonButton,
   IonCard,
@@ -45,9 +45,13 @@ export class TestConnectionPage {
   displayRefreshFailure = false;
   displayAuthFailure = false;
 
-  constructor(private authentication: AuthenticationService) {}
+  constructor(
+    private authentication: AuthenticationService,
+    private statusBar: StatusBarService,
+  ) {}
 
   async ionViewDidEnter(): Promise<void> {
+    await this.statusBar.changeBackgroundTogray();
     await this.checkLoginStatus();
   }
 
