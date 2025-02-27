@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AuthenticationService } from '@app/core';
 import { Flow, flows, Provider, providers } from '@app/data';
+import { Capacitor } from '@capacitor/core';
 import {
   auth0Config,
   awsConfig,
@@ -12,7 +13,6 @@ import {
   webConfig,
 } from '@env/environment';
 import { ProviderOptions } from '@ionic-enterprise/auth';
-import { Platform } from '@ionic/angular';
 import {
   IonButton,
   IonContent,
@@ -63,13 +63,10 @@ export class SettingsPage {
   provider: Provider;
   flow: Flow;
 
-  constructor(
-    private authentication: AuthenticationService,
-    private platform: Platform,
-  ) {}
+  constructor(private authentication: AuthenticationService) {}
 
   async ionViewDidEnter() {
-    this.showFlow = !this.platform.is('hybrid');
+    this.showFlow = !Capacitor.isNativePlatform();
     this.disableEdits = await this.authentication.isAuthenticated();
     this.disableTemplates =
       this.disableEdits || config.authUrlScheme !== 'msauth';
@@ -79,12 +76,12 @@ export class SettingsPage {
   async useAzure(): Promise<void> {
     const config: ProviderOptions = {
       ...azureConfig,
-      ...(this.platform.is('hybrid') ? {} : webConfig),
+      ...(Capacitor.isNativePlatform() ? {} : webConfig),
     };
     await this.authentication.setConfig(
       providers.find((p) => p.key === 'azure'),
       config,
-      this.platform.is('hybrid')
+      Capacitor.isNativePlatform()
         ? undefined
         : flows.find((f) => f.key === 'implicit'),
     );
@@ -94,12 +91,12 @@ export class SettingsPage {
   async useAWS(): Promise<void> {
     const config: ProviderOptions = {
       ...awsConfig,
-      ...(this.platform.is('hybrid') ? {} : webConfig),
+      ...(Capacitor.isNativePlatform() ? {} : webConfig),
     };
     await this.authentication.setConfig(
       providers.find((p) => p.key === 'cognito'),
       config,
-      this.platform.is('hybrid')
+      Capacitor.isNativePlatform()
         ? undefined
         : flows.find((f) => f.key === 'PKCE'),
     );
@@ -109,12 +106,12 @@ export class SettingsPage {
   async useAuth0(): Promise<void> {
     const config: ProviderOptions = {
       ...auth0Config,
-      ...(this.platform.is('hybrid') ? {} : webConfig),
+      ...(Capacitor.isNativePlatform() ? {} : webConfig),
     };
     await this.authentication.setConfig(
       providers.find((p) => p.key === 'auth0'),
       config,
-      this.platform.is('hybrid')
+      Capacitor.isNativePlatform()
         ? undefined
         : flows.find((f) => f.key === 'implicit'),
     );
@@ -124,12 +121,12 @@ export class SettingsPage {
   async useOkta(): Promise<void> {
     const config: ProviderOptions = {
       ...oktaConfig,
-      ...(this.platform.is('hybrid') ? {} : webConfig),
+      ...(Capacitor.isNativePlatform() ? {} : webConfig),
     };
     await this.authentication.setConfig(
       providers.find((p) => p.key === 'okta'),
       config,
-      this.platform.is('hybrid')
+      Capacitor.isNativePlatform()
         ? undefined
         : flows.find((f) => f.key === 'PKCE'),
     );
@@ -142,7 +139,7 @@ export class SettingsPage {
       discoveryUrl: this.discoveryUrl,
       scope: this.scope,
       audience: this.audience,
-      ...(this.platform.is('hybrid') ? mobileConfig : webConfig),
+      ...(Capacitor.isNativePlatform() ? mobileConfig : webConfig),
     };
     return this.authentication.setConfig(this.provider, config, this.flow);
   }

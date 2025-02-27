@@ -1,19 +1,19 @@
 import { Injectable } from '@angular/core';
 import { Flow, flows, Provider, providers } from '@app/data';
+import { Capacitor } from '@capacitor/core';
 import { Preferences } from '@capacitor/preferences';
 import { awsConfig, mobileConfig, webConfig } from '@env/environment';
 import {
   Auth0Provider,
-  CognitoProvider,
-  AzureProvider,
-  OktaProvider,
-  OneLoginProvider,
-  ProviderOptions,
   AuthConnect,
   AuthConnectConfig,
   AuthResult,
+  AzureProvider,
+  CognitoProvider,
+  OktaProvider,
+  OneLoginProvider,
+  ProviderOptions,
 } from '@ionic-enterprise/auth';
-import { Platform } from '@ionic/angular';
 
 @Injectable({
   providedIn: 'root',
@@ -36,8 +36,6 @@ export class AuthenticationService {
     | CognitoProvider
     | OktaProvider
     | OneLoginProvider;
-
-  constructor(private platform: Platform) {}
 
   async getConfig(): Promise<ProviderOptions | undefined> {
     if (!this.currentOptions) {
@@ -164,7 +162,7 @@ export class AuthenticationService {
   }
 
   private async setDefaultConfig(): Promise<void> {
-    if (this.platform.is('hybrid')) {
+    if (Capacitor.isNativePlatform()) {
       await this.setDefaultConfigMobile();
     } else {
       await this.setDefaultConfigWeb();
@@ -201,7 +199,7 @@ export class AuthenticationService {
     const flow = await this.getFlow();
     const cfg: AuthConnectConfig = {
       logLevel: 'DEBUG',
-      platform: this.platform.is('hybrid') ? 'capacitor' : 'web',
+      platform: Capacitor.isNativePlatform() ? 'capacitor' : 'web',
       ios: {
         webView: 'private',
       },

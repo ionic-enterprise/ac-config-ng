@@ -4,6 +4,7 @@ import { By } from '@angular/platform-browser';
 import { AuthenticationService } from '@app/core';
 import { createAuthenticationServiceMock } from '@app/core/testing';
 import { flows, providers } from '@app/data';
+import { Capacitor } from '@capacitor/core';
 import {
   auth0Config,
   awsConfig,
@@ -11,11 +12,9 @@ import {
   oktaConfig,
   webConfig,
 } from '@env/environment';
-import { Platform } from '@ionic/angular';
-import { createPlatformMock } from '@test/mocks';
 import { click, setInputValue } from '@test/util';
-import { SettingsPage } from './settings.page';
 import { config } from '../../config';
+import { SettingsPage } from './settings.page';
 
 describe('SettingsPage', () => {
   let component: SettingsPage;
@@ -29,7 +28,6 @@ describe('SettingsPage', () => {
       .overrideProvider(AuthenticationService, {
         useFactory: createAuthenticationServiceMock,
       })
-      .overrideProvider(Platform, { useFactory: createPlatformMock })
       .compileComponents();
 
     const auth = TestBed.inject(AuthenticationService);
@@ -43,8 +41,7 @@ describe('SettingsPage', () => {
       ...flows.find((p) => p.key === 'PKCE'),
     });
 
-    const platform = TestBed.inject(Platform);
-    (platform.is as jasmine.Spy).withArgs('hybrid').and.returnValue(false);
+    spyOn(Capacitor, 'isNativePlatform').and.returnValue(false);
 
     fixture = TestBed.createComponent(SettingsPage);
     component = fixture.componentInstance;
@@ -235,10 +232,7 @@ describe('SettingsPage', () => {
 
       describe('on the web', () => {
         beforeEach(() => {
-          const platform = TestBed.inject(Platform);
-          (platform.is as jasmine.Spy)
-            .withArgs('hybrid')
-            .and.returnValue(false);
+          (Capacitor.isNativePlatform as jasmine.Spy).and.returnValue(false);
         });
 
         it('saves the config', waitForAsync(() => {
@@ -255,8 +249,7 @@ describe('SettingsPage', () => {
 
       describe('on mobile', () => {
         beforeEach(() => {
-          const platform = TestBed.inject(Platform);
-          (platform.is as jasmine.Spy).withArgs('hybrid').and.returnValue(true);
+          (Capacitor.isNativePlatform as jasmine.Spy).and.returnValue(true);
         });
 
         it('saves the config', waitForAsync(() => {
@@ -280,10 +273,7 @@ describe('SettingsPage', () => {
 
       describe('on web', () => {
         beforeEach(() => {
-          const platform = TestBed.inject(Platform);
-          (platform.is as jasmine.Spy)
-            .withArgs('hybrid')
-            .and.returnValue(false);
+          (Capacitor.isNativePlatform as jasmine.Spy).and.returnValue(false);
         });
 
         it('saves the config', waitForAsync(() => {
@@ -300,8 +290,7 @@ describe('SettingsPage', () => {
 
       describe('on mobile', () => {
         beforeEach(() => {
-          const platform = TestBed.inject(Platform);
-          (platform.is as jasmine.Spy).withArgs('hybrid').and.returnValue(true);
+          (Capacitor.isNativePlatform as jasmine.Spy).and.returnValue(true);
         });
 
         it('saves the config', waitForAsync(() => {
@@ -327,10 +316,7 @@ describe('SettingsPage', () => {
 
       describe('on web', () => {
         beforeEach(() => {
-          const platform = TestBed.inject(Platform);
-          (platform.is as jasmine.Spy)
-            .withArgs('hybrid')
-            .and.returnValue(false);
+          (Capacitor.isNativePlatform as jasmine.Spy).and.returnValue(false);
         });
 
         it('saves the config', waitForAsync(() => {
@@ -347,8 +333,7 @@ describe('SettingsPage', () => {
 
       describe('on mobile', () => {
         beforeEach(() => {
-          const platform = TestBed.inject(Platform);
-          (platform.is as jasmine.Spy).withArgs('hybrid').and.returnValue(true);
+          (Capacitor.isNativePlatform as jasmine.Spy).and.returnValue(true);
         });
 
         it('saves the config', waitForAsync(() => {
@@ -372,10 +357,7 @@ describe('SettingsPage', () => {
 
       describe('on web', () => {
         beforeEach(() => {
-          const platform = TestBed.inject(Platform);
-          (platform.is as jasmine.Spy)
-            .withArgs('hybrid')
-            .and.returnValue(false);
+          (Capacitor.isNativePlatform as jasmine.Spy).and.returnValue(false);
         });
 
         it('saves the config', waitForAsync(() => {
@@ -392,8 +374,7 @@ describe('SettingsPage', () => {
 
       describe('on mobile', () => {
         beforeEach(() => {
-          const platform = TestBed.inject(Platform);
-          (platform.is as jasmine.Spy).withArgs('hybrid').and.returnValue(true);
+          (Capacitor.isNativePlatform as jasmine.Spy).and.returnValue(true);
         });
 
         it('saves the config', waitForAsync(() => {
@@ -419,10 +400,7 @@ describe('SettingsPage', () => {
 
       describe('on web', () => {
         beforeEach(() => {
-          const platform = TestBed.inject(Platform);
-          (platform.is as jasmine.Spy)
-            .withArgs('hybrid')
-            .and.returnValue(false);
+          (Capacitor.isNativePlatform as jasmine.Spy).and.returnValue(false);
         });
 
         it('saves the config', waitForAsync(() => {
@@ -468,8 +446,7 @@ describe('SettingsPage', () => {
 
       describe('on mobile', () => {
         beforeEach(() => {
-          const platform = TestBed.inject(Platform);
-          (platform.is as jasmine.Spy).withArgs('hybrid').and.returnValue(true);
+          (Capacitor.isNativePlatform as jasmine.Spy).and.returnValue(true);
         });
 
         it('saves the config', waitForAsync(() => {

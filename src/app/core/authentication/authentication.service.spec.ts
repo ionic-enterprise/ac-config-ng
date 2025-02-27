@@ -1,7 +1,8 @@
 import { TestBed } from '@angular/core/testing';
-import { AuthenticationService } from './authentication.service';
-import { Platform } from '@ionic/angular';
-import { createPlatformMock } from '@test/mocks';
+import { flows, providers } from '@app/data';
+import { Capacitor } from '@capacitor/core';
+import { Preferences } from '@capacitor/preferences';
+import { awsConfig, azureConfig, webConfig } from '@env/environment';
 import {
   AuthConnect,
   AuthResult,
@@ -9,9 +10,7 @@ import {
   CognitoProvider,
   ProviderOptions,
 } from '@ionic-enterprise/auth';
-import { Preferences } from '@capacitor/preferences';
-import { flows, providers } from '@app/data';
-import { awsConfig, azureConfig, webConfig } from '@env/environment';
+import { AuthenticationService } from './authentication.service';
 
 describe('AuthenticationService', () => {
   let service: AuthenticationService;
@@ -25,15 +24,8 @@ describe('AuthenticationService', () => {
   };
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      providers: [
-        {
-          provide: Platform,
-          useFactory: createPlatformMock,
-        },
-      ],
-    });
     service = TestBed.inject(AuthenticationService);
+    spyOn(Capacitor, 'isNativePlatform').and.returnValue(true);
     // The spy is global to the test to avoid log message about instantiating the plugin
     // with each test that does an init
     spyOn(AuthConnect, 'setup');
@@ -86,8 +78,7 @@ describe('AuthenticationService', () => {
     });
 
     it('sets up AC for mobile', async () => {
-      const platform = TestBed.inject(Platform);
-      (platform.is as jasmine.Spy).withArgs('hybrid').and.returnValue(true);
+      (Capacitor.isNativePlatform as jasmine.Spy).and.returnValue(true);
       await service.setConfig(providers[3], opt);
       expect(AuthConnect.setup).toHaveBeenCalledTimes(1);
       expect(AuthConnect.setup).toHaveBeenCalledWith({
@@ -104,8 +95,7 @@ describe('AuthenticationService', () => {
     });
 
     it('sets up AC for web', async () => {
-      const platform = TestBed.inject(Platform);
-      (platform.is as jasmine.Spy).withArgs('hybrid').and.returnValue(false);
+      (Capacitor.isNativePlatform as jasmine.Spy).and.returnValue(false);
       await service.setConfig(providers[3], opt, flows[1]);
       expect(AuthConnect.setup).toHaveBeenCalledTimes(1);
       expect(AuthConnect.setup).toHaveBeenCalledWith({
@@ -326,8 +316,7 @@ describe('AuthenticationService', () => {
   //       tested in the login
   describe('login', () => {
     beforeEach(() => {
-      const platform = TestBed.inject(Platform);
-      (platform.is as jasmine.Spy).withArgs('hybrid').and.returnValue(true);
+      (Capacitor.isNativePlatform as jasmine.Spy).and.returnValue(true);
       spyOn(AuthConnect, 'login').and.callFake(() =>
         Promise.resolve(testAuthResult),
       );
@@ -394,10 +383,7 @@ describe('AuthenticationService', () => {
 
       describe('on web', () => {
         beforeEach(() => {
-          const platform = TestBed.inject(Platform);
-          (platform.is as jasmine.Spy)
-            .withArgs('hybrid')
-            .and.returnValue(false);
+          (Capacitor.isNativePlatform as jasmine.Spy).and.returnValue(false);
         });
 
         it('creates with Cognito', async () => {

@@ -4,8 +4,8 @@ import { FormsModule } from '@angular/forms';
 import { AuthenticationService } from '@app/core';
 import { Flow, Provider } from '@app/data';
 import { YesNoPipe } from '@app/shared/yes-no.pipe';
+import { Capacitor } from '@capacitor/core';
 import { ProviderOptions } from '@ionic-enterprise/auth';
-import { Platform } from '@ionic/angular';
 import {
   IonContent,
   IonHeader,
@@ -39,13 +39,10 @@ export class InfoPage {
   accessTokenExpired: boolean;
   refreshAvailable: boolean;
 
-  constructor(
-    private authentication: AuthenticationService,
-    private platform: Platform,
-  ) {}
+  constructor(private authentication: AuthenticationService) {}
 
   async ionViewWillEnter() {
-    this.showFlow = !this.platform.is('hybrid');
+    this.showFlow = !Capacitor.isNativePlatform();
     this.config = await this.authentication.getConfig();
     this.configStr = JSON.stringify(this.config, undefined, 2);
     this.flow = await this.authentication.getFlow();
