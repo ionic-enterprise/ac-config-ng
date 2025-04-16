@@ -97,6 +97,14 @@ export class AuthenticationService {
         this.provider,
         this.currentOptions,
       );
+      try {
+        await AuthConnect.login(this.provider, {
+          ...this.currentOptions,
+          //scope: 'some valid other scope',
+        });
+      } catch (err: unknown) {
+        alert(err);
+      }
       await Preferences.set({
         key: this.authResultKey,
         value: JSON.stringify(this.authResult),
