@@ -92,11 +92,15 @@ export class AuthenticationService {
   }
 
   async login(): Promise<void> {
+    //const wait = (ms: number): Promise<void> =>
+    //  new Promise((resolve) => setTimeout(resolve, ms));
+
     if (!this.authResult) {
       this.authResult = await AuthConnect.login(
         this.provider,
         this.currentOptions,
       );
+      //await wait(1000);
       try {
         await AuthConnect.login(this.provider, {
           ...this.currentOptions,
