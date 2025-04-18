@@ -1,9 +1,17 @@
 vars:
+  SPLASH_BG_COLOR:
+    default: "#F4F5F8"
   AUTH_URL_SCHEME:
     default: "msauth"
 
 platforms:
   android:
+    xml:
+      - resFile: values/ic_launcher_background.xml
+        target: /resources/color[@name="ic_launcher_background"]
+        replace: |
+          <color name="ic_launcher_background">$SPLASH_BG_COLOR</color>
+
     gradle:
       - file: variables.gradle
         target:
