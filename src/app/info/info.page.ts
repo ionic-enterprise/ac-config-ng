@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AuthenticationService } from '@app/core';
@@ -22,7 +21,6 @@ import {
     IonTitle,
     IonContent,
     IonHeader,
-    CommonModule,
     FormsModule,
     YesNoPipe,
   ],

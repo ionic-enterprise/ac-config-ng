@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { IonContent, IonSpinner } from '@ionic/angular/standalone';
@@ -7,6 +6,6 @@ import { IonContent, IonSpinner } from '@ionic/angular/standalone';
   selector: 'app-auth-action-complete',
   templateUrl: './auth-action-complete.page.html',
   styleUrls: ['./auth-action-complete.page.scss'],
-  imports: [IonSpinner, IonContent, CommonModule, FormsModule],
+  imports: [IonSpinner, IonContent, FormsModule],
 })
 export class AuthActionCompletePage {}

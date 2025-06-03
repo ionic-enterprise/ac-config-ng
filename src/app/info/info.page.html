@@ -48,10 +48,12 @@
     <dt>Audience</dt>
     <dd>{{config?.audience}}</dd>
   </dl>
-  <dl *ngIf="showFlow">
+  @if (showFlow) {
+  <dl>
     <dt>Web Auth Flow</dt>
     <dd>{{flow?.value || "implicit (using default)"}}</dd>
   </dl>
+  }
   <h1>Raw Configuration</h1>
   <pre>{{ configStr }}</pre>
 

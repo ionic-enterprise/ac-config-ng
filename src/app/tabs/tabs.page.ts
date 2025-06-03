@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import {
   IonIcon,
@@ -18,7 +17,7 @@ import {
   selector: 'app-tabs',
   templateUrl: 'tabs.page.html',
   styleUrls: ['tabs.page.scss'],
-  imports: [IonLabel, IonIcon, IonTabBar, IonTabButton, IonTabs, CommonModule],
+  imports: [IonLabel, IonIcon, IonTabBar, IonTabButton, IonTabs],
 })
 export class TabsPage {
   constructor() {

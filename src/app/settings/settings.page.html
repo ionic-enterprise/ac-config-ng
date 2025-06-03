@@ -5,9 +5,11 @@
 </ion-header>
 
 <ion-content>
-  <div *ngIf="disableEdits" class="error-message" data-testid="logout-message">
+  @if (disableEdits) {
+  <div class="error-message" data-testid="logout-message">
     Please log out first
   </div>
+  }
 
   <ion-list>
     <ion-list-header> Ionic's OIDC Server Options</ion-list-header>
@@ -62,9 +64,9 @@
         [disabled]="disableEdits"
         label="Auth Config"
       >
-        <ion-select-option *ngFor="let s of oidcServers" [value]="s"
-          >{{s.value}}</ion-select-option
-        >
+        @for (s of oidcServers; track s) {
+        <ion-select-option [value]="s">{{s.value}}</ion-select-option>
+        }
       </ion-select>
     </ion-item>
     <ion-item>
@@ -103,17 +105,19 @@
         labelPlacement="floating"
       ></ion-input>
     </ion-item>
-    <ion-item *ngIf="showFlow">
+    @if (showFlow) {
+    <ion-item>
       <ion-select
         [(ngModel)]="flow"
         [disabled]="disableEdits"
         label="Web Auth Flow"
       >
-        <ion-select-option *ngFor="let s of authFlows" [value]="s"
-          >{{s.value}}</ion-select-option
-        >
+        @for (s of authFlows; track s) {
+        <ion-select-option [value]="s">{{s.value}}</ion-select-option>
+        }
       </ion-select>
     </ion-item>
+    }
     <ion-item>
       <ion-label>
         <ion-button
