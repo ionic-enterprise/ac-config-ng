@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AuthenticationService } from '@app/core';
 import {
@@ -37,13 +37,13 @@ import {
   ],
 })
 export class TestConnectionPage {
+  private authentication = inject(AuthenticationService);
+
   loggedIn: boolean;
   canRefresh: boolean;
   displayRefreshSuccess = false;
   displayRefreshFailure = false;
   displayAuthFailure = false;
-
-  constructor(private authentication: AuthenticationService) {}
 
   async ionViewDidEnter(): Promise<void> {
     await this.checkLoginStatus();

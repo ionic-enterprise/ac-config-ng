@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AuthenticationService } from '@app/core';
 import { Flow, Provider } from '@app/data';
@@ -26,6 +26,8 @@ import {
   ],
 })
 export class InfoPage {
+  private authentication = inject(AuthenticationService);
+
   config: ProviderOptions;
   configStr: string;
   flow: Flow;
@@ -36,8 +38,6 @@ export class InfoPage {
   accessToken: string | undefined;
   accessTokenExpired: boolean;
   refreshAvailable: boolean;
-
-  constructor(private authentication: AuthenticationService) {}
 
   async ionViewWillEnter() {
     this.showFlow = !Capacitor.isNativePlatform();

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AuthenticationService } from '@app/core';
 import { Flow, flows, Provider, providers } from '@app/data';
@@ -49,6 +49,8 @@ import { config } from '../../config';
   ],
 })
 export class SettingsPage {
+  private authentication = inject(AuthenticationService);
+
   disableEdits: boolean;
   disableTemplates: boolean;
   showFlow: boolean;
@@ -60,8 +62,6 @@ export class SettingsPage {
   scope: string;
   provider: Provider;
   flow: Flow;
-
-  constructor(private authentication: AuthenticationService) {}
 
   async ionViewDidEnter() {
     this.showFlow = !Capacitor.isNativePlatform();
